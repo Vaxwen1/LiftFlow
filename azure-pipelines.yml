@@ -2,6 +2,7 @@ trigger:
   - main
 
 pool:
+  name: 'LiftFlowAgentPool'
   vmImage: 'ubuntu-latest'
 
 steps:
