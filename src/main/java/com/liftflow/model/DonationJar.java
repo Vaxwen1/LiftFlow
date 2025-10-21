@@ -45,6 +45,12 @@ public class DonationJar {
 
     public DonationJar() {}
 
+    /// //////////////// ВАЛИДАЦИЯ
+
+
+
+    ///
+
     // ----- геттеры/сеттеры -----
     public Integer getJarId() { return jarId; }
     public void setJarId(Integer jarId) { this.jarId = jarId; }

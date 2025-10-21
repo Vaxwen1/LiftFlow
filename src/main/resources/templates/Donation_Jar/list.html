@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Donation Jars</title>
+    <link rel="stylesheet" href="/css/styles.css" /> <!-- Если есть стили -->
+</head>
+<body>
+<h1>Donation Jars</h1>
+<a th:href="@{/jars/new}">Create New Jar</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Target Amount</th>
+        <th>Current Amount</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="jar : ${jars}">
+        <td th:text="${jar.jarId}"></td>
+        <td th:text="${jar.jarName}"></td>
+        <td th:text="${jar.targetAmount}"></td>
+        <td th:text="${jar.currentAmount}"></td>
+        <td>
+            <a th:href="@{/jars/{id}/donate(id=${jar.jarId})}">Donate</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
