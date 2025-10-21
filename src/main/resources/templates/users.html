@@ -1,4 +1,4 @@
-<!Doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -8,14 +8,26 @@
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid #ddd; padding: 8px; }
         th { background: #f4f4f4; text-align: left; }
+        td.actions { white-space: nowrap; }
+        a.button, button { padding: 4px 8px; margin: 0 2px; font-size: 0.9rem; cursor: pointer; }
     </style>
 </head>
 <body>
 <h1>Users</h1>
+
+<p>
+    <a th:href="@{/users/new}" class="button">Add New User</a>
+</p>
+
 <table>
     <thead>
     <tr>
-        <th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -25,6 +37,12 @@
         <td th:text="${u.email}"></td>
         <td th:text="${u.role}"></td>
         <td th:text="${u.status}"></td>
+        <td class="actions">
+            <a th:href="@{/users/{id}/edit(id=${u.userId})}">Edit</a>
+            <form th:action="@{/users/{id}/delete(id=${u.userId})}" method="post" style="display:inline">
+                <button type="submit" onclick="return confirm('Delete this user?')">Delete</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

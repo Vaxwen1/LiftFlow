@@ -1,9 +1,15 @@
 server:
   port: 8081
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 spring:
   thymeleaf:
-    cache: false
+    encoding: UTF-8
+
 
   datasource:
     url: "jdbc:sqlserver://liftflowserver.database.windows.net:1433;databaseName=LiftFlowDB;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"

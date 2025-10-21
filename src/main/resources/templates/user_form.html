@@ -1,49 +1,104 @@
-<!doctype html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Новый пользователь</title>
+    <title th:text="${mode} == 'edit' ? 'Edit User' : 'New User'">User Form</title>
+    <style>
+        body { font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif; margin: 2rem; max-width: 720px; }
+        form > div { margin: 0 0 12px; }
+        label { display: inline-block; min-width: 140px; }
+        input { padding: 6px 8px; width: 280px; }
+        small.hint { color: #666; display:block; margin-top: 4px; }
+    </style>
 </head>
 <body>
-<h1>Новый пользователь</h1>
+<h1 th:text="${mode} == 'edit' ? 'Edit User' : 'Create New User'"></h1>
 
-<form th:action="@{/users}" th:object="${user}" method="post">
+<!-- CREATE FORM -->
+<form th:if="${mode} != 'edit'"
+      th:action="@{/users}"
+      th:object="${user}"
+      method="post">
     <div>
-        <label>Username</label>
-        <input th:field="*{username}" required>
+        <label for="usernameC">Username</label>
+        <input id="usernameC" th:field="*{username}" required placeholder="john_doe">
     </div>
     <div>
-        <label>Email</label>
-        <input th:field="*{email}" type="email" required>
+        <label for="emailC">Email</label>
+        <input id="emailC" th:field="*{email}" type="email" required placeholder="name@example.com">
     </div>
     <div>
-        <label>Пароль (демо!)</label>
-        <input th:field="*{password}" type="password" required>
+        <label for="passwordC">Password</label>
+        <input id="passwordC" th:field="*{password}" type="password" required placeholder="min 8 characters">
     </div>
     <div>
-        <label>Имя</label>
-        <input th:field="*{firstName}">
+        <label for="firstNameC">First Name</label>
+        <input id="firstNameC" th:field="*{firstName}" placeholder="John">
     </div>
     <div>
-        <label>Фамилия</label>
-        <input th:field="*{lastName}">
+        <label for="lastNameC">Last Name</label>
+        <input id="lastNameC" th:field="*{lastName}" placeholder="Doe">
     </div>
     <div>
-        <label>Телефон</label>
-        <input th:field="*{phoneNumber}">
+        <label for="phoneNumberC">Phone Number</label>
+        <input id="phoneNumberC" th:field="*{phoneNumber}" placeholder="+1 555 123 4567">
     </div>
     <div>
-        <label>Роль</label>
-        <input th:field="*{role}" maxlength="1">
+        <label for="roleC">Role</label>
+        <input id="roleC" th:field="*{role}" maxlength="1" placeholder="A or D or F">
+        <small class="hint">Use: A=Admin, D=Donor, F=Fundraiser</small>
     </div>
     <div>
-        <label>Статус</label>
-        <input th:field="*{status}" maxlength="1">
+        <label for="statusC">Status</label>
+        <input id="statusC" th:field="*{status}" maxlength="1" placeholder="A or D">
+        <small class="hint">Use: A=Active, D=Disabled</small>
     </div>
-    <button type="submit">Сохранить</button>
-    <a href="/">Отмена</a>
+    <div>
+        <button type="submit">Create</button>
+        <a th:href="@{/users}">Cancel</a>
+    </div>
 </form>
 
-<p style="color:#a00">В проде пароль храните как ХЭШ (BCrypt/Argon2) и не показывайте его нигде.</p>
+<!-- EDIT FORM -->
+<form th:if="${mode} == 'edit'"
+      th:action="@{/users/{id}(id=${user.userId})}"
+      th:object="${user}"
+      method="post">
+    <div>
+        <label for="usernameE">Username</label>
+        <input id="usernameE" th:field="*{username}" required placeholder="john_doe">
+    </div>
+    <div>
+        <label for="emailE">Email</label>
+        <input id="emailE" th:field="*{email}" type="email" required placeholder="name@example.com">
+    </div>
+    <!-- Add password change field if you support it -->
+    <div>
+        <label for="firstNameE">First Name</label>
+        <input id="firstNameE" th:field="*{firstName}" placeholder="John">
+    </div>
+    <div>
+        <label for="lastNameE">Last Name</label>
+        <input id="lastNameE" th:field="*{lastName}" placeholder="Doe">
+    </div>
+    <div>
+        <label for="phoneNumberE">Phone Number</label>
+        <input id="phoneNumberE" th:field="*{phoneNumber}" placeholder="+1 555 123 4567">
+    </div>
+    <div>
+        <label for="roleE">Role</label>
+        <input id="roleE" th:field="*{role}" maxlength="1" placeholder="A or D or F">
+        <small class="hint">Use: A=Admin, D=Donor, F=Fundraiser</small>
+    </div>
+    <div>
+        <label for="statusE">Status</label>
+        <input id="statusE" th:field="*{status}" maxlength="1" placeholder="A or D">
+        <small class="hint">Use: A=Active, D=Disabled</small>
+    </div>
+    <div>
+        <button type="submit">Update</button>
+        <a th:href="@{/users}">Cancel</a>
+    </div>
+</form>
 </body>
 </html>
