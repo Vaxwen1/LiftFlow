@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Новый пользователь</title>
+</head>
+<body>
+<h1>Новый пользователь</h1>
+
+<form th:action="@{/users}" th:object="${user}" method="post">
+    <div>
+        <label>Username</label>
+        <input th:field="*{username}" required>
+    </div>
+    <div>
+        <label>Email</label>
+        <input th:field="*{email}" type="email" required>
+    </div>
+    <div>
+        <label>Пароль (демо!)</label>
+        <input th:field="*{password}" type="password" required>
+    </div>
+    <div>
+        <label>Имя</label>
+        <input th:field="*{firstName}">
+    </div>
+    <div>
+        <label>Фамилия</label>
+        <input th:field="*{lastName}">
+    </div>
+    <div>
+        <label>Телефон</label>
+        <input th:field="*{phoneNumber}">
+    </div>
+    <div>
+        <label>Роль</label>
+        <input th:field="*{role}" maxlength="1">
+    </div>
+    <div>
+        <label>Статус</label>
+        <input th:field="*{status}" maxlength="1">
+    </div>
+    <button type="submit">Сохранить</button>
+    <a href="/">Отмена</a>
+</form>
+
+<p style="color:#a00">В проде пароль храните как ХЭШ (BCrypt/Argon2) и не показывайте его нигде.</p>
+</body>
+</html>
