@@ -9,13 +9,14 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     private final UserRepository repo;
+
     public UserService(UserRepository repo) { this.repo = repo; }
 
     public List<User> findAll() { return repo.findAll(); }
 
     public User create(User u) {
-        // ВАЖНО: храните ХЭШ пароля, а не сам пароль!
         if (u.getCreatedAt() == null) u.setCreatedAt(LocalDateTime.now());
         u.setUpdatedAt(LocalDateTime.now());
         return repo.save(u);
