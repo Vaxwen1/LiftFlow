@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Add Donation</title></head>
+<body>
+<h1>Add Donation</h1>
+
+<form th:action="@{/donations}" th:object="${donation}" method="post">
+    <div>
+        <label>User ID</label>
+        <input th:field="*{userId}" type="number" required>
+    </div>
+    <div>
+        <label>Jar ID</label>
+        <input th:field="*{jarId}" type="number" required>
+    </div>
+    <div>
+        <label>Amount</label>
+        <input th:field="*{amount}" type="number" step="0.01" min="0.01" required>
+    </div>
+    <div>
+        <label>Payment method</label>
+        <input th:field="*{paymentMethod}" placeholder="Card/PayPal/...">
+    </div>
+    <button type="submit">Save</button>
+    <a href="/">Cancel</a>
+</form>
+<div th:if="${error}" style="color:#b00;margin:8px 0" th:text="${error}"></div>
+<div th:if="${success}" style="color:green" th:text="${success}"></div>
+</body>
+</html>
