@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiftFlow - Home</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <a href="/" class="brand">LiftFlow</a>
+    </div>
+    <div class="nav-right">
+        <a th:href="@{/login}" class="nav-btn">Login</a>
+        <a th:href="@{/register}" class="nav-btn register">Register</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Welcome to <span>LiftFlow</span></h1>
+        <p>Streamline your donation and fundraising workflow with simplicity and speed.</p>
+        <div class="hero-actions">
+            <a th:href="@{/register}" class="cta">Get Started</a>
+            <a th:href="@{/login}" class="cta secondary">Login</a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 LiftFlow. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

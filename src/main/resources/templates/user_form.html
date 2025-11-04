@@ -2,103 +2,70 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${mode} == 'edit' ? 'Edit User' : 'New User'">User Form</title>
-    <style>
-        body { font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif; margin: 2rem; max-width: 720px; }
-        form > div { margin: 0 0 12px; }
-        label { display: inline-block; min-width: 140px; }
-        input { padding: 6px 8px; width: 280px; }
-        small.hint { color: #666; display:block; margin-top: 4px; }
-    </style>
+    <title>LiftFlow - User Form</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-<h1 th:text="${mode} == 'edit' ? 'Edit User' : 'Create New User'"></h1>
 
-<!-- CREATE FORM -->
-<form th:if="${mode} != 'edit'"
-      th:action="@{/users}"
-      th:object="${user}"
-      method="post">
-    <div>
-        <label for="usernameC">Username</label>
-        <input id="usernameC" th:field="*{username}" required placeholder="john_doe">
+<nav class="navbar">
+    <div class="nav-left">
+        <a th:href="@{/'/'}" class="brand">LiftFlow</a>
     </div>
-    <div>
-        <label for="emailC">Email</label>
-        <input id="emailC" th:field="*{email}" type="email" required placeholder="name@example.com">
+    <div class="nav-right">
+        <a th:href="@{/users}" class="nav-btn">Back</a>
     </div>
-    <div>
-        <label for="passwordC">Password</label>
-        <input id="passwordC" th:field="*{password}" type="password" required placeholder="min 8 characters">
-    </div>
-    <div>
-        <label for="firstNameC">First Name</label>
-        <input id="firstNameC" th:field="*{firstName}" placeholder="John">
-    </div>
-    <div>
-        <label for="lastNameC">Last Name</label>
-        <input id="lastNameC" th:field="*{lastName}" placeholder="Doe">
-    </div>
-    <div>
-        <label for="phoneNumberC">Phone Number</label>
-        <input id="phoneNumberC" th:field="*{phoneNumber}" placeholder="+1 555 123 4567">
-    </div>
-    <div>
-        <label for="roleC">Role</label>
-        <input id="roleC" th:field="*{role}" maxlength="1" placeholder="A or D or F">
-        <small class="hint">Use: A=Admin, D=Donor, F=Fundraiser</small>
-    </div>
-    <div>
-        <label for="statusC">Status</label>
-        <input id="statusC" th:field="*{status}" maxlength="1" placeholder="A or D">
-        <small class="hint">Use: A=Active, D=Disabled</small>
-    </div>
-    <div>
-        <button type="submit">Create</button>
-        <a th:href="@{/users}">Cancel</a>
-    </div>
-</form>
+</nav>
 
-<!-- EDIT FORM -->
-<form th:if="${mode} == 'edit'"
-      th:action="@{/users/{id}(id=${user.userId})}"
-      th:object="${user}"
-      method="post">
-    <div>
-        <label for="usernameE">Username</label>
-        <input id="usernameE" th:field="*{username}" required placeholder="john_doe">
+<section class="auth-section">
+    <div class="auth-card">
+        <h2 th:text="${mode == 'create' ? 'Add New User' : 'Edit User'}"></h2>
+
+        <form th:object="${user}" th:action="${mode == 'create'} ? @{/users} : @{'/users/' + ${user.userId}}" method="post">
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" th:field="*{username}" type="text" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" th:field="*{email}" type="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" th:field="*{password}" type="password" placeholder="Enter or update password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="firstName">First name</label>
+                <input id="firstName" th:field="*{firstName}" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Last name</label>
+                <input id="lastName" th:field="*{lastName}" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="phoneNumber">Phone number</label>
+                <input id="phoneNumber" th:field="*{phoneNumber}" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role</label>
+                <input id="role" th:field="*{role}" type="text" maxlength="1" placeholder="A/D/F">
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <input id="status" th:field="*{status}" type="text" maxlength="1" placeholder="A/D">
+            </div>
+
+            <button type="submit" class="auth-btn" th:text="${mode == 'create' ? 'Create' : 'Update'}"></button>
+        </form>
     </div>
-    <div>
-        <label for="emailE">Email</label>
-        <input id="emailE" th:field="*{email}" type="email" required placeholder="name@example.com">
-    </div>
-    <!-- Add password change field if you support it -->
-    <div>
-        <label for="firstNameE">First Name</label>
-        <input id="firstNameE" th:field="*{firstName}" placeholder="John">
-    </div>
-    <div>
-        <label for="lastNameE">Last Name</label>
-        <input id="lastNameE" th:field="*{lastName}" placeholder="Doe">
-    </div>
-    <div>
-        <label for="phoneNumberE">Phone Number</label>
-        <input id="phoneNumberE" th:field="*{phoneNumber}" placeholder="+1 555 123 4567">
-    </div>
-    <div>
-        <label for="roleE">Role</label>
-        <input id="roleE" th:field="*{role}" maxlength="1" placeholder="A or D or F">
-        <small class="hint">Use: A=Admin, D=Donor, F=Fundraiser</small>
-    </div>
-    <div>
-        <label for="statusE">Status</label>
-        <input id="statusE" th:field="*{status}" maxlength="1" placeholder="A or D">
-        <small class="hint">Use: A=Active, D=Disabled</small>
-    </div>
-    <div>
-        <button type="submit">Update</button>
-        <a th:href="@{/users}">Cancel</a>
-    </div>
-</form>
+</section>
+
 </body>
 </html>

@@ -2,65 +2,86 @@ package com.liftflow.controller;
 
 import com.liftflow.model.User;
 import com.liftflow.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService service;
+    private final UserService userService;
 
-    public UserController(UserService service) {
-        this.service = service;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    /** List all users */
+    // --- List all users ---
     @GetMapping
-    public String list(Model model) {
-        List<User> users = service.findAll();
-        model.addAttribute("users", users);
-        return "users"; // templates/users.html
+    public String listUsers(Model model) {
+        model.addAttribute("users", userService.findAll());
+        return "users";
     }
 
-    /** Show create form */
+    // --- Show create form ---
     @GetMapping("/new")
-    public String createForm(Model model) {
+    public String showCreateForm(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("mode", "create");
-        return "user_form"; // templates/user_form.html
+        return "user_form";
     }
 
-    /** Handle create */
+    // --- Handle new user creation ---
     @PostMapping
-    public String create(@ModelAttribute("user") User formUser) {
-        service.create(formUser);
+    public String createUser(
+            @Valid @ModelAttribute("user") User user,
+            BindingResult result,
+            Model model
+    ) {
+        if (result.hasErrors()) {
+            model.addAttribute("mode", "create");
+            return "user_form";
+        }
+
+        if (user.getRole() == '\0') user.setRole('D');
+        if (user.getStatus() == '\0') user.setStatus('A');
+
+        userService.create(user);
         return "redirect:/users";
     }
 
-    /** Show edit form */
+    // --- Show edit form ---
     @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable("id") Integer id, Model model) {
-        User user = service.findById(id); // 404 if not found
+    public String showEditForm(@PathVariable("id") Integer id, Model model) {
+        User user = userService.findById(id);
         model.addAttribute("user", user);
         model.addAttribute("mode", "edit");
         return "user_form";
     }
 
-    /** Handle update (POST from edit form) */
+    // --- Handle update ---
     @PostMapping("/{id}")
-    public String update(@PathVariable("id") Integer id, @ModelAttribute("user") User formUser) {
-        service.update(id, formUser);
+    public String updateUser(
+            @PathVariable("id") Integer id,
+            @Valid @ModelAttribute("user") User updatedUser,
+            BindingResult result,
+            Model model
+    ) {
+        if (result.hasErrors()) {
+            model.addAttribute("mode", "edit");
+            return "user_form";
+        }
+
+        userService.update(id, updatedUser);
         return "redirect:/users";
     }
 
-    /** Handle delete (POST from list row) */
-    @PostMapping("/{id}/delete")
-    public String delete(@PathVariable("id") Integer id) {
-        service.delete(id);
+    // --- Delete user ---
+    @GetMapping("/{id}/delete")
+    public String deleteUser(@PathVariable("id") Integer id) {
+        userService.delete(id);
         return "redirect:/users";
     }
 }
