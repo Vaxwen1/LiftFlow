@@ -32,12 +32,22 @@ public class DonationController {
     // ---- ADD DONATION ----
     @GetMapping("/new")
     public String newDonationForm(Model model) {
-        model.addAttribute("donation", new DonationRequest());
-        model.addAttribute("users", userRepo.findAll());
-        model.addAttribute("jars", jarRepo.findAll());
-        model.addAttribute("paymentMethods", Arrays.asList("Card","PayPal","Crypto","Bank Transfer"));
+        try {
+            model.addAttribute("donation", new DonationRequest());
+            model.addAttribute("users", userRepo.findAll());
+            model.addAttribute("jars", jarRepo.findAll());
+            model.addAttribute("paymentMethods",
+                    Arrays.asList("Card","PayPal","Crypto","Bank Transfer"));
+        } catch (DataAccessException ex) {
+            model.addAttribute("error",
+                    "Database error while loading users/jars: " +
+                            (ex.getMostSpecificCause() != null
+                                    ? ex.getMostSpecificCause().getMessage()
+                                    : ex.getMessage()));
+        }
         return "Donation/donation_form";
     }
+
 
     // создание доната из формы
     @PostMapping
