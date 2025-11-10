@@ -1,49 +1,71 @@
-<!doctype html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Новый пользователь</title>
+    <title>LiftFlow - User Form</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-<h1>Новый пользователь</h1>
 
-<form th:action="@{/users}" th:object="${user}" method="post">
-    <div>
-        <label>Username</label>
-        <input th:field="*{username}" required>
+<nav class="navbar">
+    <div class="nav-left">
+        <a th:href="@{/'/'}" class="brand">LiftFlow</a>
     </div>
-    <div>
-        <label>Email</label>
-        <input th:field="*{email}" type="email" required>
+    <div class="nav-right">
+        <a th:href="@{/users}" class="nav-btn">Back</a>
     </div>
-    <div>
-        <label>Пароль (демо!)</label>
-        <input th:field="*{password}" type="password" required>
-    </div>
-    <div>
-        <label>Имя</label>
-        <input th:field="*{firstName}">
-    </div>
-    <div>
-        <label>Фамилия</label>
-        <input th:field="*{lastName}">
-    </div>
-    <div>
-        <label>Телефон</label>
-        <input th:field="*{phoneNumber}">
-    </div>
-    <div>
-        <label>Роль</label>
-        <input th:field="*{role}" maxlength="1">
-    </div>
-    <div>
-        <label>Статус</label>
-        <input th:field="*{status}" maxlength="1">
-    </div>
-    <button type="submit">Сохранить</button>
-    <a href="/">Отмена</a>
-</form>
+</nav>
 
-<p style="color:#a00">В проде пароль храните как ХЭШ (BCrypt/Argon2) и не показывайте его нигде.</p>
+<section class="auth-section">
+    <div class="auth-card">
+        <h2 th:text="${mode == 'create' ? 'Add New User' : 'Edit User'}"></h2>
+
+        <form th:object="${user}" th:action="${mode == 'create'} ? @{/users} : @{'/users/' + ${user.userId}}" method="post">
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" th:field="*{username}" type="text" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" th:field="*{email}" type="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" th:field="*{password}" type="password" placeholder="Enter or update password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="firstName">First name</label>
+                <input id="firstName" th:field="*{firstName}" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Last name</label>
+                <input id="lastName" th:field="*{lastName}" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="phoneNumber">Phone number</label>
+                <input id="phoneNumber" th:field="*{phoneNumber}" type="text">
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role</label>
+                <input id="role" th:field="*{role}" type="text" maxlength="1" placeholder="A/D/F">
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <input id="status" th:field="*{status}" type="text" maxlength="1" placeholder="A/D">
+            </div>
+
+            <button type="submit" class="auth-btn" th:text="${mode == 'create' ? 'Create' : 'Update'}"></button>
+        </form>
+    </div>
+</section>
+
 </body>
 </html>
