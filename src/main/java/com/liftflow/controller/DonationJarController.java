@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/jars")
+@RequestMapping("/jars") //путь для HTTP запросов
 public class DonationJarController {
 
     @Autowired
@@ -28,22 +28,47 @@ public class DonationJarController {
         return "jars/list"; // Шаблон: src/main/resources/templates/jars/list.html
     }
 
+
+
+
+
+
+
+
+    //REWRITING IN PROGRESS!
     // Thymeleaf: Форма создания банки
-    @GetMapping("/new")
+    @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("jar", new DonationJar());
         return "jars/create"; // Шаблон: src/main/resources/templates/jars/create.html
     }
 
+
+
+
+
+
+
+
+    //REWRITING IN PROGRESS!
     // Thymeleaf: Обработка создания банки
-    @PostMapping
-    public String createJar(@Valid @ModelAttribute("jar") DonationJar jar, BindingResult result, Model model) {
-        if (result.hasErrors()) {
+    @PostMapping  //run when get POST request
+    public String createJar(@Valid @ModelAttribute("jar") DonationJar jar, //автоматически создаёт объект DonationJar и заполняет его данными (атрибутами) из формы - <form action="/jars" method="post">
+                            BindingResult result, //Содержит результаты проверки
+                            Model model) {
+        if (result.hasErrors()) { //Если ошибка все-таки имеется
             return "jars/create";
         }
         service.create(jar);
-        return "redirect:/jars";
+        return "redirect:/jars"; //редерект
     }
+
+
+
+
+
+
+
 
     // Thymeleaf: Форма добавления пожертвования
     @GetMapping("/{id}/donate")
