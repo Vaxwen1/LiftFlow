@@ -1,40 +1,44 @@
 package com.liftflow.controller;
 
 import com.liftflow.model.FundRaiserPost;
-import com.liftflow.model.User;
 import com.liftflow.service.FundRaiserPostService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+@Controller
+@RequestMapping("/posts")
 public class FundRaiserPostController {
+
     private final FundRaiserPostService service;
 
-    public FundRaiserPostController(FundRaiserPostService service)
-    {
+    public FundRaiserPostController(FundRaiserPostService service) {
         this.service = service;
     }
 
+    // GET /posts/
     @GetMapping("/")
     public String fundRaiserPosts(Model model) {
         model.addAttribute("posts", service.findAll());
         return "posts";
     }
 
-    @GetMapping("/posts/new")
+    // GET /posts/new
+    @GetMapping("/new")
     public String newFundRaiserPostForm(Model model) {
         FundRaiserPost fp = new FundRaiserPost();
-        fp.setRole('F');
-        fp.setStatus('A');
+        fp.setPostType("text");
+        fp.setLikesCount(0);
+        fp.setCommentsCount(0);
+
         model.addAttribute("post", fp);
         return "post_form";
     }
 
-    @PostMapping("/posts")
-    public String createFundRaiserPost(@ModelAttribute("user") FundRaiserPost fp) {
-        service.create(fp); // createdAt/updatedAt выставятся в сервисе
-        return "redirect:/";
+    // POST /posts
+    @PostMapping
+    public String createFundRaiserPost(@ModelAttribute("post") FundRaiserPost fp) {
+        service.create(fp);
+        return "redirect:/posts/";
     }
-
 }
