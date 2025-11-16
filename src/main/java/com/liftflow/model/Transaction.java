@@ -44,7 +44,6 @@ public class Transaction {
 
     public Transaction() {}
 
-    // ----- геттеры/сеттеры -----
     public Integer getTransactionId() { return transactionId; }
     public void setTransactionId(Integer transactionId) { this.transactionId = transactionId; }
 
