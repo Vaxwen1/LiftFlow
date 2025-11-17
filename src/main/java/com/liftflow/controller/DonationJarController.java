@@ -1,7 +1,9 @@
 package com.liftflow.controller;
 
 import com.liftflow.model.DonationJar;
+import com.liftflow.model.User;
 import com.liftflow.service.DonationJarService;
+import com.liftflow.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,98 +16,94 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/jars") //путь для HTTP запросов
+@RequestMapping("/jars")
 public class DonationJarController {
 
     @Autowired
     private DonationJarService service;
+    private UserService userService;
 
-    // Thymeleaf: Список всех банок
-//    @GetMapping
-//    public String listJars(Model model) {
-//        List<DonationJar> jars = service.getAll();
-//        model.addAttribute("jars", jars);
-//        return "Donation_Jar/list";
-//    }
 
+    // LIST + MY LIST
     @GetMapping
     public String listJars(Model model) {
-        List<DonationJar> jars = null;
-        try {
-            jars = service.getAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("jars", jars != null ? jars : List.of());
+
+        List<DonationJar> jars = service.getAll();
+
+        model.addAttribute("jars", jars);
+
+        //user id
+        Integer currentUserId = 1;
+
+        List<DonationJar> myJars = jars.stream()
+                .filter(j -> j.getCreatedBy() != null &&
+                        j.getCreatedBy().getUserId().equals(currentUserId))
+                .toList();
+
+        model.addAttribute("myJars", myJars);
+
         return "jars/list";
     }
 
 
-
-
-
-
-
-
-    //REWRITING IN PROGRESS!
-    // Thymeleaf: Форма создания банки
+    // CREATE FORM
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("jar", new DonationJar());
-        return "jars/create"; // Шаблон: src/main/resources/templates/jars/create.html
+        model.addAttribute("isEdit", false);  // флаг для шаблона
+        return "jars/create";
     }
 
+    @PostMapping
+    public String createJar(@Valid @ModelAttribute("jar") DonationJar jar,
+                            BindingResult result) {
 
-
-
-
-
-
-
-    //REWRITING IN PROGRESS!
-    // Thymeleaf: Обработка создания банки
-    @PostMapping  //run when get POST request
-    public String createJar(@Valid @ModelAttribute("jar") DonationJar jar, //автоматически создаёт объект DonationJar и заполняет его данными (атрибутами) из формы - <form action="/jars" method="post">
-                            BindingResult result, //Содержит результаты проверки
-                            Model model) {
-        if (result.hasErrors()) { //Если ошибка все-таки имеется
+        if (result.hasErrors()) {
             return "jars/create";
         }
+
         service.create(jar);
-        return "redirect:/jars"; //редерект
-    }
-
-
-
-
-
-
-
-
-    // Thymeleaf: Форма добавления пожертвования
-    @GetMapping("/{id}/donate")
-    public String showDonateForm(@PathVariable Integer id, Model model) {
-        DonationJar jar = service.getById(id).orElseThrow(() -> new RuntimeException("Jar not found"));
-        model.addAttribute("jar", jar);
-        model.addAttribute("amount", new BigDecimal("0.00"));
-        return "jars/donate"; // Шаблон: src/main/resources/templates/jars/donate.html
-    }
-
-    // Thymeleaf: Обработка пожертвования
-    @PostMapping("/{id}/donate")
-    public String addDonation(@PathVariable Integer id, @RequestParam BigDecimal amount) {
-        service.addDonation(id, amount);
         return "redirect:/jars";
     }
 
-    // REST API: Получить все банки
+
+    // EDIT FORM
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Integer id, Model model) {
+
+        DonationJar jar = service.getById(id)
+                .orElseThrow(() -> new RuntimeException("Jar not found"));
+
+        model.addAttribute("jar", jar);
+        model.addAttribute("isEdit", true);   // флаг для шаблона
+
+        return "jars/edit";
+    }
+
+
+    @PostMapping("/{id}")
+    public String updateJar(@PathVariable Integer id,
+                            @Valid @ModelAttribute("jar") DonationJar jar,
+                            BindingResult result) {
+
+        if (result.hasErrors()) {
+            return "jars/create"; // errors -> back to form
+        }
+
+        service.update(id, jar);
+
+        return "redirect:/jars";
+    }
+
+
+
+
     @GetMapping("/api")
     @ResponseBody
     public List<DonationJar> getAllApi() {
         return service.getAll();
     }
 
-    // REST API: Получить банку по ID
     @GetMapping("/api/{id}")
     @ResponseBody
     public ResponseEntity<DonationJar> getByIdApi(@PathVariable Integer id) {
@@ -114,14 +112,12 @@ public class DonationJarController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // REST API: Создать банку
     @PostMapping("/api")
     @ResponseBody
     public DonationJar createApi(@Valid @RequestBody DonationJar jar) {
         return service.create(jar);
     }
 
-    // REST API: Обновить банку
     @PutMapping("/api/{id}")
     @ResponseBody
     public ResponseEntity<DonationJar> updateApi(@PathVariable Integer id, @Valid @RequestBody DonationJar jar) {
@@ -132,7 +128,6 @@ public class DonationJarController {
         }
     }
 
-    // REST API: Удалить банку
     @DeleteMapping("/api/{id}")
     @ResponseBody
     public ResponseEntity<Void> deleteApi(@PathVariable Integer id) {
@@ -144,14 +139,4 @@ public class DonationJarController {
         }
     }
 
-    // REST API: Добавить пожертвование
-    @PostMapping("/api/{id}/donate")
-    @ResponseBody
-    public ResponseEntity<DonationJar> addDonationApi(@PathVariable Integer id, @RequestParam BigDecimal amount) {
-        try {
-            return ResponseEntity.ok(service.addDonation(id, amount));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
 }

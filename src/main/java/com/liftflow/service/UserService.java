@@ -30,6 +30,12 @@ public class UserService {
                         HttpStatus.NOT_FOUND, "User not found with ID " + id));
     }
 
+    public User findByName(Integer id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "User not found with ID " + id));
+    }
+
     // --- Create new user ---
     public User create(User user) {
         user.setCreatedAt(LocalDateTime.now());

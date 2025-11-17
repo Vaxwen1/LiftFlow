@@ -28,11 +28,22 @@ public class DonationJarService {
     }
 
     public DonationJar create(@Valid DonationJar jar) {
+
+        jar.setJarName(jar.getJarName());
+        jar.setTargetAmount(jar.getTargetAmount());
+//        jar.setCurrentAmount(BigDecimal.valueOf(0));
+        jar.setCurrentAmount(jar.getCurrentAmount());
+        jar.setTargetAmount(jar.getTargetAmount());
+        jar.setEndDate(jar.getEndDate());
+
+        jar.setCreatedBy(jar.getCreatedBy());
         jar.setCreatedAt(LocalDateTime.now());
         jar.setUpdatedAt(LocalDateTime.now());
         jar.setCurrentAmount(jar.getCurrentAmount() != null ? jar.getCurrentAmount() : BigDecimal.ZERO);
+
         return repository.save(jar);
     }
+
 
     public DonationJar update(Integer id, @Valid DonationJar updatedJar) {
         return repository.findById(id).map(jar -> {
@@ -51,16 +62,5 @@ public class DonationJarService {
             throw new RuntimeException("DonationJar not found with id " + id);
         }
         repository.deleteById(id);
-    }
-
-    public DonationJar addDonation(Integer id, BigDecimal amount) {
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Donation amount must be positive");
-        }
-        return repository.findById(id).map(jar -> {
-            jar.setCurrentAmount(jar.getCurrentAmount().add(amount));
-            jar.setUpdatedAt(LocalDateTime.now());
-            return repository.save(jar);
-        }).orElseThrow(() -> new RuntimeException("DonationJar not found with id " + id));
     }
 }
