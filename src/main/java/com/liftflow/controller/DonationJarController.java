@@ -2,15 +2,18 @@ package com.liftflow.controller;
 
 import com.liftflow.model.DonationJar;
 import com.liftflow.model.User;
+import com.liftflow.security.CustomUserDetails;
 import com.liftflow.service.DonationJarService;
-import com.liftflow.service.UserService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.liftflow.repository.UserRepository;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,38 +22,33 @@ import java.util.List;
 @RequestMapping("/jars")
 public class DonationJarController {
 
-    @Autowired
-    private DonationJarService service;
-    private UserService userService;
+    private final DonationJarService jarService;
+    private final UserRepository userRepository;
 
+    public DonationJarController(DonationJarService jarService, UserRepository userRepository) {
+        this.jarService = jarService;
+        this.userRepository = userRepository;
+    }
 
-    // LIST + MY LIST
     @GetMapping
     public String listJars(Model model) {
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
 
-        List<DonationJar> jars = service.getAll();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        model.addAttribute("jars", jarService.getAll());
 
-        model.addAttribute("jars", jars);
-
-        //user id
-        Integer currentUserId = 1;
-
-        List<DonationJar> myJars = jars.stream()
-                .filter(j -> j.getCreatedBy() != null &&
-                        j.getCreatedBy().getUserId().equals(currentUserId))
-                .toList();
-
+        List<DonationJar> myJars = jarService.getAll().stream()
+                        .filter(j -> j.getCreatedBy() != null &&
+                                j.getCreatedBy().getUserId().equals(user.getUserId())).toList();
         model.addAttribute("myJars", myJars);
-
         return "jars/list";
     }
 
-
-    // CREATE FORM
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("jar", new DonationJar());
-        model.addAttribute("isEdit", false);  // флаг для шаблона
         return "jars/create";
     }
 
@@ -62,81 +60,17 @@ public class DonationJarController {
             return "jars/create";
         }
 
-        service.create(jar);
-        return "redirect:/jars";
-    }
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
 
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-    // EDIT FORM
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Integer id, Model model) {
+        jar.setCreatedBy(user);
 
-        DonationJar jar = service.getById(id)
-                .orElseThrow(() -> new RuntimeException("Jar not found"));
-
-        model.addAttribute("jar", jar);
-        model.addAttribute("isEdit", true);   // флаг для шаблона
-
-        return "jars/edit";
-    }
-
-
-    @PostMapping("/{id}")
-    public String updateJar(@PathVariable Integer id,
-                            @Valid @ModelAttribute("jar") DonationJar jar,
-                            BindingResult result) {
-
-        if (result.hasErrors()) {
-            return "jars/create"; // errors -> back to form
-        }
-
-        service.update(id, jar);
+        jarService.create(jar);
 
         return "redirect:/jars";
-    }
-
-
-
-
-    @GetMapping("/api")
-    @ResponseBody
-    public List<DonationJar> getAllApi() {
-        return service.getAll();
-    }
-
-    @GetMapping("/api/{id}")
-    @ResponseBody
-    public ResponseEntity<DonationJar> getByIdApi(@PathVariable Integer id) {
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PostMapping("/api")
-    @ResponseBody
-    public DonationJar createApi(@Valid @RequestBody DonationJar jar) {
-        return service.create(jar);
-    }
-
-    @PutMapping("/api/{id}")
-    @ResponseBody
-    public ResponseEntity<DonationJar> updateApi(@PathVariable Integer id, @Valid @RequestBody DonationJar jar) {
-        try {
-            return ResponseEntity.ok(service.update(id, jar));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/api/{id}")
-    @ResponseBody
-    public ResponseEntity<Void> deleteApi(@PathVariable Integer id) {
-        try {
-            service.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
 }

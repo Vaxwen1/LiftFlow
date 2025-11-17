@@ -20,6 +20,18 @@ body {
     z-index: 100;
 }
 
+.user-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.username {
+    font-weight: bold;
+    color: #333;
+}
+
+
 /* Brand (Logo / Name) */
 .navbar .brand {
     font-weight: 700;

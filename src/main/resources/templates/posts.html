@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>All Posts</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,6 +29,16 @@
     </style>
 </head>
 <body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <a th:href="@{/}" class="brand">LiftFlow</a>
+    </div>
+    <div class="nav-right">
+        <a th:href="@{/login}" class="nav-btn">Login</a>
+        <a th:href="@{/register}" class="nav-btn register">Register</a>
+    </div>
+</nav>
 
 <h1>Fundraiser Posts</h1>
 

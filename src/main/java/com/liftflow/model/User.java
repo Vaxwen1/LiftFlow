@@ -15,7 +15,6 @@ public class User {
     @Column(nullable = false, length = 255)
     private String username;
 
-    // ⚠️ храните ХЭШ пароля, не raw
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
@@ -56,9 +55,6 @@ public class User {
     private LocalDateTime updatedAt;
 
     public User() {}
-
-    // геттеры/сеттеры (можно сгенерировать в IDE)
-    // ...
     public Integer getUserId() { return userId; }
     public void setUserId(Integer userId) { this.userId = userId; }
     public String getUsername() { return username; }
