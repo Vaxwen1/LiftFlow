@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Add Donation</title>
@@ -12,8 +13,19 @@
         <a href="/" class="brand">LiftFlow</a>
     </div>
     <div class="nav-right">
-        <a th:href="@{/login}" class="nav-btn">Login</a>
-        <a th:href="@{/register}" class="nav-btn register">Register</a>
+        <!-- SHOW WHEN NOT LOGGED IN -->
+        <div sec:authorize="isAnonymous()">
+            <a th:href="@{/login}" class="nav-btn">Login</a>
+            <a th:href="@{/register}" class="nav-btn register">Register</a>
+        </div>
+
+        <!-- SHOW WHEN LOGGED IN -->
+        <div sec:authorize="isAuthenticated()" class="user-box">
+            <span class="username">
+                <span sec:authentication="name"></span>
+            </span>
+            <a th:href="@{/logout}" class="nav-btn">Logout</a>
+        </div>
     </div>
 </nav>
 

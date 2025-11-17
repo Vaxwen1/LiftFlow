@@ -22,13 +22,14 @@ public class SecurityConfig {
                                 "/style.css",      // your CSS file
                                 "/images/**",
                                 "/css/**",
-                                "/static/**"
+                                "/static/**",
+                                "/posts/"
                         ).permitAll()
                         .anyRequest().authenticated()   // everything else requires login
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/posts/", true)
                         .permitAll()
                 )
                 .logout(logout -> logout

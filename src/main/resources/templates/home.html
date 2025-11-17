@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,8 +18,14 @@
     <div class="nav-right">
         <a th:href="@{/jars}" class="nav-btn">Add Donation</a>
         <a th:href="@{/donation/refund}" class="nav-btn">Request Refund Donation</a>
-        <a th:href="@{/login}" class="nav-btn">Login</a>
-        <a th:href="@{/register}" class="nav-btn register">Register</a>
+
+        <!-- SHOW WHEN NOT LOGGED IN -->
+        <a sec:authorize="isAnonymous()" th:href="@{/login}" class="nav-btn">Login</a>
+        <a sec:authorize="isAnonymous()" th:href="@{/register}" class="nav-btn register">Register</a>
+
+        <!-- SHOW WHEN LOGGED IN -->
+        <span sec:authorize="isAuthenticated()" th:text="${loggedUser.username}"></span>
+        <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="nav-btn">Logout</a>
     </div>
 </nav>
 
