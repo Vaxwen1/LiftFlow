@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Donation</title>
+    <style>
+        body { font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif; background: #f5f6fa; margin: 0; }
+        nav { background: #2b3e50; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; }
+        nav a { color: #fff; text-decoration: none; margin-left: 1.2rem; font-weight: 500; }
+        nav a:hover { text-decoration: underline; }
+        .container { max-width: 500px; margin: 3rem auto; background: #fff; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2b3e50; margin-bottom: 1.5rem; }
+        form div { margin-bottom: 1rem; }
+        label { display: block; font-weight: 600; margin-bottom: 0.3rem; }
+        select, input { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
+        button { width: 100%; padding: 0.7rem; background: #2b3e50; color: white; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; }
+        button:hover { background: #3c536f; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span><strong>LiftFlow</strong></span>
+    <div>
+        <a th:href="@{/users}">Users</a>
+        <a th:href="@{/donations/new}">Add Donation</a>
+        <a th:href="@{/donations/refund}">Refund Donation</a>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Add Donation</h1>
+
+    <div th:if="${error}" class="msg-err" th:text="${error}"></div>
+    <div th:if="${success}" class="msg-ok" th:text="${success}"></div>
+
+    <form th:action="@{/donations}" th:object="${donation}" method="post">
+
+        <div>
+            <label>User</label>
+            <select th:field="*{userId}" required>
+                <option value="" disabled selected>Select user...</option>
+                <option th:each="u : ${users}" th:value="${u.userId}" th:text="${u.username}"></option>
+            </select>
+        </div>
+
+        <div>
+            <label>Donation Jar</label>
+            <select th:field="*{jarId}" required>
+                <option value="" disabled selected>Select jar...</option>
+                <option th:each="j : ${jars}" th:value="${j.jarId}" th:text="${j.jarName}"></option>
+            </select>
+        </div>
+
+        <div>
+            <label>Amount</label>
+            <input th:field="*{amount}" type="number" step="0.01" min="0.01" required>
+        </div>
+
+        <div>
+            <label>Payment Method</label>
+            <select th:field="*{paymentMethod}" required>
+                <option value="" disabled selected>Select payment method...</option>
+                <option th:each="pm : ${paymentMethods}" th:value="${pm}" th:text="${pm}"></option>
+            </select>
+        </div>
+
+        <button type="submit">Save Donation</button>
+    </form>
+</div>
+
+</body>
+</html>
