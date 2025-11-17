@@ -3,104 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Refund Donation</title>
-    <style>
-        body {
-            font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
-            background: #f5f6fa;
-            margin: 0;
-            padding: 0;
-        }
-        nav {
-            background: #2b3e50;
-            color: #fff;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 1.2rem;
-            font-weight: 500;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        .container {
-            max-width: 500px;
-            margin: 3rem auto;
-            background: #fff;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #2b3e50;
-            margin-bottom: 1.5rem;
-        }
-        form div {
-            margin-bottom: 1rem;
-        }
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-        input {
-            width: 100%;
-            padding: 0.6rem;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-        button {
-            width: 100%;
-            padding: 0.7rem;
-            background: #2b3e50;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #3c536f;
-        }
-        .msg-ok { color: green; margin-top: 1rem; text-align: center; }
-        .msg-err { color: #b00; margin-top: 1rem; text-align: center; }
-    </style>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
 
-<nav>
-    <span><strong>LiftFlow</strong></span>
-    <div>
-        <a th:href="@{/users}">Users</a>
-        <a th:href="@{/donations/new}">Add Donation</a>
-        <a th:href="@{/donations/refund}">Refund Donation</a>
+<nav class="navbar">
+    <div class="nav-left">
+        <a href="/" class="brand">LiftFlow</a>
+    </div>
+    <div class="nav-right">
+        <a th:href="@{/login}" class="nav-btn">Login</a>
+        <a th:href="@{/register}" class="nav-btn register">Register</a>
     </div>
 </nav>
 
-<div class="container">
-    <h1>Refund Donation</h1>
+<div class="refund-page-wrapper">
 
-    <div th:if="${error}" class="msg-err" th:text="${error}"></div>
-    <div th:if="${success}" class="msg-ok" th:text="${success}"></div>
+    <div class="refund-container">
 
-    <form th:action="@{/donations/refund}" method="post">
-        <div>
-            <label>Transaction ID</label>
-            <input name="transactionId" th:value="${transactionId}" required>
-        </div>
-        <div>
-            <label>Refund Amount</label>
-            <input name="amount" th:value="${amount}" placeholder="e.g. 100.00" required>
-        </div>
-        <button type="submit">Refund</button>
-    </form>
+        <h1 class="refund-title">Refund Donation</h1>
+
+        <!-- Messages -->
+        <div th:if="${error}" class="refund-error" th:text="${error}"></div>
+        <div th:if="${success}" class="refund-success" th:text="${success}"></div>
+
+        <!-- Refund Form -->
+        <form class="refund-form" th:action="@{/donation/refund}" method="post">
+
+            <!-- Transaction ID -->
+            <div class="refund-field-group">
+                <label>Transaction ID</label>
+                <input type="text" name="transactionId" th:value="${transactionId}" required>
+            </div>
+
+            <!-- Refund Amount -->
+            <div class="refund-field-group">
+                <label>Refund Amount</label>
+                <input type="number" step="0.01" name="amount" th:value="${amount}" placeholder="e.g. 100.00" required>
+                <div class="refund-hint">Enter the amount you want to refund</div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="refund-btn-primary">Refund</button>
+
+        </form>
+    </div>
 </div>
+
 
 </body>
 </html>

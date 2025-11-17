@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @Service
 public class DonationService {
 
+    private static final int ANONYMOUS_USER_ID = 1;
+
     private final DonationRepository donationRepo;
     private final DonationJarRepository jarRepo;
     private final UserRepository userRepo;
@@ -30,37 +32,64 @@ public class DonationService {
     /** Add Donation: create Donation + Transaction + increase jar.currentAmount */
     @Transactional
     public Donation addDonation(DonationRequest req) {
-        if (req.getAmount() == null || req.getAmount().compareTo(BigDecimal.ZERO) <= 0)
-            throw new IllegalArgumentException("Amount must be > 0");
 
-        User user = userRepo.findById(req.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        // ---- basic validation ----
+        if (req.getAmount() == null || req.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0");
+        }
+        if (req.getJarId() == null) {
+            throw new IllegalArgumentException("Jar id is required");
+        }
+
+        // ---- 1) Resolve user (guest vs logged-in) ----
+        User user;
+        if (req.getUserId() == null) {  // guest / non-logged
+            user = userRepo.findById(ANONYMOUS_USER_ID)
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Anonymous user not found. Please create user with id=" + ANONYMOUS_USER_ID));
+        } else {                        // logged-in
+            user = userRepo.findById(req.getUserId())
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "User not found with id " + req.getUserId()));
+        }
+
+        // ---- 2) Resolve jar ----
         DonationJar jar = jarRepo.findById(req.getJarId())
-                .orElseThrow(() -> new IllegalArgumentException("Jar not found"));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Jar not found with id " + req.getJarId()));
 
-        // 1) Donation
-        Donation d = new Donation();
-        d.setDonationAmount(req.getAmount());
-        d.setDonationDate(LocalDateTime.now());
-        d.setUser(user);
-        d.setJar(jar);
-        d = donationRepo.save(d);
+        // ---- 3) Create & save Donation ----
+        Donation donation = new Donation();
+        donation.setDonationAmount(req.getAmount());
+        donation.setDonationDate(LocalDateTime.now());
+        donation.setUser(user);
+        donation.setJar(jar);
 
-        // 2) Transaction (считаем успешной — Completed; можно сделать Pending)
+        donation = donationRepo.save(donation);  // <-- now donation has ID
+
+        // ---- 4) Create & save Transaction row ----
         Transaction tx = new Transaction();
         tx.setTransactionAmount(req.getAmount());
         tx.setTransactionDate(LocalDateTime.now());
-        tx.setDonation(d);
-        tx.setTransactionStatus("Completed"); // или "Pending" если ждёшь платёжку
-        tx.setPaymentMethod(req.getPaymentMethod() == null ? "Unknown" : req.getPaymentMethod());
-        txRepo.save(tx);
+        tx.setTransactionStatus("Completed");                          // or "Pending" if you need
+        tx.setPaymentMethod(
+                req.getPaymentMethod() == null ? "Unknown" : req.getPaymentMethod()
+        );
+        tx.setDonation(donation);  // FK to Donation
 
-        // 3) Update jar amount
-        jar.setCurrentAmount(jar.getCurrentAmount().add(req.getAmount()));
+        txRepo.save(tx);           // <-- this writes into dbo.[Transaction]
+
+        // ---- 5) Update jar currentAmount ----
+        BigDecimal current = jar.getCurrentAmount();
+        if (current == null) {
+            current = BigDecimal.ZERO;
+        }
+        jar.setCurrentAmount(current.add(req.getAmount()));
         jar.setUpdatedAt(LocalDateTime.now());
-        jarRepo.save(jar);
 
-        return d;
+        jarRepo.save(jar);         // <-- update dbo.DonationJar
+
+        return donation;
     }
 
     /** Refund Donation by original transaction id */

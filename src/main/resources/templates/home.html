@@ -8,11 +8,15 @@
 </head>
 <body>
 
+
+
 <nav class="navbar">
     <div class="nav-left">
         <a href="/" class="brand">LiftFlow</a>
     </div>
     <div class="nav-right">
+        <a th:href="@{/jars}" class="nav-btn">Add Donation</a>
+        <a th:href="@{/donation/refund}" class="nav-btn">Request Refund Donation</a>
         <a th:href="@{/login}" class="nav-btn">Login</a>
         <a th:href="@{/register}" class="nav-btn register">Register</a>
     </div>

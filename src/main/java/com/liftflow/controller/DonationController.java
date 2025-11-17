@@ -5,70 +5,102 @@ import com.liftflow.model.dto.DonationRequest;
 import com.liftflow.repository.DonationJarRepository;
 import com.liftflow.repository.UserRepository;
 import com.liftflow.service.DonationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
 
 @Controller
-@RequestMapping("/donations")
+@RequestMapping("/donation")   // Jar is still the main resource
 public class DonationController {
 
-    private final DonationService service;
+    private final DonationService donationService;
     private final UserRepository userRepo;
     private final DonationJarRepository jarRepo;
 
-    public DonationController(DonationService service, UserRepository userRepo, DonationJarRepository jarRepo) {
-        this.service = service;
+    public DonationController(DonationService donationService,
+                              UserRepository userRepo,
+                              DonationJarRepository jarRepo) {
+        this.donationService = donationService;
         this.userRepo = userRepo;
         this.jarRepo = jarRepo;
     }
 
 
-    // ---- ADD DONATION ----
-    @GetMapping("/new")
-    public String newDonationForm(Model model) {
+    /**
+     * Show donation form (HTML)
+     * URL: GET /donation-jars/{jarId}/donations/new
+     */
+    // show HTML form
+    @GetMapping("/{jarId}/donations/new")
+    public String showDonationForm(@PathVariable Integer jarId, Model model) {
         try {
-            model.addAttribute("donation", new DonationRequest());
+            DonationRequest form = new DonationRequest();
+            form.setJarId(jarId);               // pre-select this jar
+
+            // *** IMPORTANT: attribute name must be "donation" ***
+            model.addAttribute("donation", form);
+
+            // same data your old controller used
             model.addAttribute("users", userRepo.findAll());
-            model.addAttribute("jars", jarRepo.findAll());
+            model.addAttribute("jar", jarRepo.findById(jarId).orElseThrow());
             model.addAttribute("paymentMethods",
-                    Arrays.asList("Card","PayPal","Crypto","Bank Transfer"));
+                    Arrays.asList("Card", "PayPal", "Crypto", "Bank Transfer"));
         } catch (DataAccessException ex) {
-            model.addAttribute("error",
+            model.addAttribute(
+                    "error",
                     "Database error while loading users/jars: " +
                             (ex.getMostSpecificCause() != null
                                     ? ex.getMostSpecificCause().getMessage()
-                                    : ex.getMessage()));
+                                    : ex.getMessage())
+            );
         }
+
+        // path: src/main/resources/templates/Donation/donation_form.html
         return "Donation/donation_form";
     }
 
+    /**
+     * Handle form submit
+     * URL: POST /donation-jars/{jarId}/donations
+     *
+     * - Guest (not logged in): userId stays null in DonationRequest.
+     *   DonationService will use ANONYMOUS_USER_ID.
+     * - Logged in: you can set request.setUserId(loggedInUserId) if you have it.
+     */
+    @PostMapping("/{jarId}/donations")
+    public String createDonation(@PathVariable Integer jarId,
+                                 @ModelAttribute("donation") DonationRequest request,
+                                 RedirectAttributes redirectAttributes) {
+        request.setJarId(jarId);
 
-    // создание доната из формы
-    @PostMapping
-    public String addDonation(@ModelAttribute("donation") com.liftflow.model.dto.DonationRequest request,
-                              org.springframework.ui.Model model) {
         try {
-            service.addDonation(request);
-            model.addAttribute("success", "Donation successfully added!");
-            return "Donation/donation_form";
-        } catch (org.springframework.dao.DataAccessException ex) {
-            // покажем корневую ошибку от драйвера SQL Server
-            String root = (ex.getMostSpecificCause() != null) ? ex.getMostSpecificCause().getMessage() : ex.getMessage();
-            model.addAttribute("error", root);
-            return "Donation/donation_form";
-        } catch (IllegalArgumentException ex) {
-            model.addAttribute("error", ex.getMessage());
-            return "Donation/donation_form";
+            donationService.addDonation(request);
+
+            redirectAttributes.addFlashAttribute("success", "Donation saved successfully.");
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            // validation or logical problems
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        } catch (DataAccessException ex) {
+            // DB-level problems
+            String root = (ex.getMostSpecificCause() != null)
+                    ? ex.getMostSpecificCause().getMessage()
+                    : ex.getMessage();
+            redirectAttributes.addFlashAttribute("error", "Database error: " + root);
         } catch (Exception ex) {
-            model.addAttribute("error", "Unexpected: " + ex.getClass().getSimpleName() + " - " + ex.getMessage());
-            return "Donation/donation_form";
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    "Unexpected error: " + ex.getClass().getSimpleName() + " - " + ex.getMessage()
+            );
         }
+
+        return "redirect:/donation/" + jarId + "/donations/new";
     }
 
     /** Показать форму Refund (вводим transactionId и amount вручную) */
@@ -90,7 +122,7 @@ public class DonationController {
             Integer txId = Integer.valueOf(txIdStr.trim());
             BigDecimal amount = new BigDecimal(amountStr.replace(',', '.').trim());
 
-            service.refundDonation(txId, amount);
+            donationService.refundDonation(txId, amount);
 
             model.addAttribute("success", "Refund completed for transaction #" + txId);
             model.addAttribute("transactionId", "");
@@ -111,6 +143,5 @@ public class DonationController {
         }
         return "Donation/refund_form"; // <-- имя вью совпадает с файлом
     }
-
 
 }
