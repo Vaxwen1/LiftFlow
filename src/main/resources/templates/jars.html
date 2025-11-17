@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Donation Jars</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-left"><a th:href="@{/dashboard}" class="brand">LiftFlow</a></div>
+    <div class="nav-right">
+        <a th:href="@{/jars/new}" class="nav-btn register">New Jar</a>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="nav-btn">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<section class="content">
+    <h2>My Donation Jars</h2>
+    <table class="user-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Jar name</th>
+            <th>Target</th>
+            <th>Current</th>
+            <th>Start</th>
+            <th>End</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="j : ${jars}">
+            <td th:text="${j.jarId}">1</td>
+            <td th:text="${j.jarName}">Jar name</td>
+            <td th:text="${j.targetAmount}">0.00</td>
+            <td th:text="${j.currentAmount}">0.00</td>
+            <td th:text="${j.startDate}">2025-01-01</td>
+            <td th:text="${j.endDate}">2025-12-31</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Upgrade to Fundraiser</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-left"><a th:href="@{/dashboard}" class="brand">LiftFlow</a></div>
+    <div class="nav-right">
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="nav-btn">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<section class="auth-section">
+    <div class="auth-card">
+        <h2>Upgrade to Fundraiser</h2>
+        <p class="auth-subtitle">Provide passport details for verification.</p>
+
+        <div th:if="${formError}" class="error-box">
+            <p th:text="${formError}"></p>
+        </div>
+
+        <form th:action="@{/fundraiser/upgrade}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="passportNumber">Passport Number</label>
+                <input id="passportNumber" name="passportNumber" type="text"
+                       placeholder="123456789" required>
+            </div>
+
+            <div class="form-group">
+                <label for="issuingCountry">Issuing Country</label>
+                <input id="issuingCountry" name="issuingCountry" type="text"
+                       placeholder="IE, UK, US..." required>
+            </div>
+
+            <div class="form-group">
+                <label for="passportImage">Passport Image (optional)</label>
+                <input id="passportImage" name="passportImage" type="file" accept="image/*">
+            </div>
+
+            <button type="submit" class="auth-btn">Submit & Continue</button>
+        </form>
+    </div>
+</section>
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.liftflow.controller;
 
 import com.liftflow.model.User;
 import com.liftflow.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,74 +10,116 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
 
     private final UserService userService;
 
-    // Constructor injection (recommended for Spring Boot 3+)
     public HomeController(UserService userService) {
         this.userService = userService;
     }
 
     // --------------------------
-    // Home page
+    // Landing / Dashboard
     // --------------------------
     @GetMapping("/")
-    public String home() {
-        return "home"; // maps to templates/home.html
+    public String home(HttpSession session, Model model) {
+        User current = (User) session.getAttribute("currentUser");
+        if (current == null) {
+            return "home"; // public landing page
+        }
+        model.addAttribute("username", current.getUsername());
+        return "dashboard";
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboard(HttpSession session, Model model) {
+        User current = (User) session.getAttribute("currentUser");
+        if (current == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("username", current.getUsername());
+        return "dashboard";
     }
 
     // --------------------------
-    // Login page
+    // Login
     // --------------------------
     @GetMapping("/login")
-    public String login() {
-        return "login"; // maps to templates/login.html
+    public String loginPage(HttpSession session, Model model) {
+        User current = (User) session.getAttribute("currentUser");
+        if (current != null) {
+            model.addAttribute("username", current.getUsername());
+            return "dashboard";
+        }
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String doLogin(@RequestParam("username") String email,
+                          @RequestParam("password") String password,
+                          HttpSession session,
+                          Model model) {
+
+        // Very simple login: find user by email and compare plain password
+        User found = userService.findAll().stream()
+                .filter(u -> u.getEmail() != null && u.getEmail().equalsIgnoreCase(email))
+                .findFirst()
+                .orElse(null);
+
+        if (found == null || found.getPassword() == null || !found.getPassword().equals(password)) {
+            model.addAttribute("loginError", "Invalid email or password");
+            return "login";
+        }
+
+        session.setAttribute("currentUser", found);
+        return "redirect:/dashboard";
     }
 
     // --------------------------
-    // Registration form (GET)
+    // Logout
+    // --------------------------
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
+
+    // --------------------------
+    // Registration
     // --------------------------
     @GetMapping("/register")
     public String registerForm(Model model) {
-        model.addAttribute("user", new User()); // empty user object for form binding
-        return "register"; // maps to templates/register.html
+        model.addAttribute("user", new User());
+        return "register";
     }
 
-    // --------------------------
-    // Handle registration (POST)
-    // --------------------------
     @PostMapping("/register")
     public String registerSubmit(
             @Valid @ModelAttribute("user") User user,
             BindingResult result,
-            Model model
-    ) {
-        // 1. Basic validation (required fields)
+            Model model) {
+
         if (result.hasErrors()) {
             return "register";
         }
 
-        // 2. Check if email already exists
-        boolean emailExists = userService.findAll()
-                .stream()
-                .anyMatch(u -> u.getEmail().equalsIgnoreCase(user.getEmail()));
+        boolean emailExists = userService.findAll().stream()
+                .anyMatch(u -> u.getEmail() != null
+                        && user.getEmail() != null
+                        && u.getEmail().equalsIgnoreCase(user.getEmail()));
         if (emailExists) {
             model.addAttribute("user", user);
             model.addAttribute("emailError", "Email already registered");
             return "register";
         }
 
-        // 3. Assign sensible defaults if not set
-        if (user.getRole() == '\0') user.setRole('D'); // D = Donor (default role)
-        if (user.getStatus() == '\0') user.setStatus('A'); // A = Active
+        if (user.getRole() == '\0') user.setRole('D');  // Donor
+        if (user.getStatus() == '\0') user.setStatus('A'); // Active
 
-        // 4. Save new user
         userService.create(user);
-
-        // 5. Redirect to login with success flag
         return "redirect:/login?registered=true";
     }
 }
