@@ -59,13 +59,6 @@ public class DonationJarService {
         }).orElseThrow(() -> new RuntimeException("DonationJar not found with id " + id));
     }
 
-//    public void delete(Integer id) {
-//        if (!repository.existsById(id)) {
-//            throw new RuntimeException("DonationJar not found with id " + id);
-//        }
-//        repository.deleteById(id);
-//    }
-
     @Transactional
     public void delete(Integer id) {
 

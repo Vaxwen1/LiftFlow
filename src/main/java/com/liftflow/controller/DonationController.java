@@ -33,10 +33,7 @@ public class DonationController {
     }
 
 
-    /**
-     * Show donation form (HTML)
-     * URL: GET /donation-jars/{jarId}/donations/new
-     */
+
     // show HTML form
     @GetMapping("/{jarId}/donations/new")
     public String showDonationForm(@PathVariable Integer jarId, Model model) {
@@ -66,14 +63,8 @@ public class DonationController {
         return "Donation/donation_form";
     }
 
-    /**
-     * Handle form submit
-     * URL: POST /donation-jars/{jarId}/donations
-     *
-     * - Guest (not logged in): userId stays null in DonationRequest.
-     *   DonationService will use ANONYMOUS_USER_ID.
-     * - Logged in: you can set request.setUserId(loggedInUserId) if you have it.
-     */
+
+
     @PostMapping("/{jarId}/donations")
     public String createDonation(@PathVariable Integer jarId,
                                  @ModelAttribute("donation") DonationRequest request,
@@ -103,7 +94,8 @@ public class DonationController {
         return "redirect:/donation/" + jarId + "/donations/new";
     }
 
-    /** Показать форму Refund (вводим transactionId и amount вручную) */
+
+
     @GetMapping("/refund")
     public String refundForm(Model model) {
         model.addAttribute("transactionId", "");
@@ -111,7 +103,8 @@ public class DonationController {
         return "Donation/refund_form"; // <-- путь к твоему файлу
     }
 
-    /** Обработать Refund */
+
+
     @PostMapping("/refund")
     public String refund(
             @RequestParam("transactionId") String txIdStr,
@@ -143,5 +136,4 @@ public class DonationController {
         }
         return "Donation/refund_form"; // <-- имя вью совпадает с файлом
     }
-
 }

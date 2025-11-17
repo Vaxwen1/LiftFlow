@@ -74,10 +74,6 @@ public class DonationJarController {
         return "redirect:/jars";
     }
 
-
-
-
-
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model) {
         DonationJar jar = jarService.getById(id)
@@ -100,12 +96,6 @@ public class DonationJarController {
         return "redirect:/jars";
     }
 
-//    @GetMapping("/delete/{id}")
-//    public String deleteJar(@PathVariable Integer id) {
-//        jarService.delete(id);
-//        return "redirect:/jars";
-//    }
-
     @GetMapping("/delete/{id}")
     public String deleteJar(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {
@@ -114,10 +104,6 @@ public class DonationJarController {
         } catch (IllegalStateException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
-
         return "redirect:/jars";
     }
-
-
-
 }
