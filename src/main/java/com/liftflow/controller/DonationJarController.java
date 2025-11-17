@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -72,5 +73,51 @@ public class DonationJarController {
 
         return "redirect:/jars";
     }
+
+
+
+
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Integer id, Model model) {
+        DonationJar jar = jarService.getById(id)
+                .orElseThrow(() -> new RuntimeException("Jar not found"));
+
+        model.addAttribute("jar", jar);
+        return "jars/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String updateJar(@PathVariable Integer id,
+                            @Valid @ModelAttribute("jar") DonationJar jar,
+                            BindingResult result) {
+
+        if (result.hasErrors()) {
+            return "jars/edit";
+        }
+
+        jarService.update(id, jar);
+        return "redirect:/jars";
+    }
+
+//    @GetMapping("/delete/{id}")
+//    public String deleteJar(@PathVariable Integer id) {
+//        jarService.delete(id);
+//        return "redirect:/jars";
+//    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteJar(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            jarService.delete(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Jar deleted successfully.");
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+
+        return "redirect:/jars";
+    }
+
+
 
 }

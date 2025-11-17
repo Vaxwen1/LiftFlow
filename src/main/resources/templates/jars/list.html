@@ -24,6 +24,8 @@
     <link href="stylesheets/headers.css" rel="stylesheet" />
     <link href="stylesheets/sticky-footer.css" rel="stylesheet" />
 
+
+
   </head>
 <body>
     <!-- col-sm-12 col-md-8 col-lg-6 mx-auto -->
@@ -101,33 +103,50 @@
     <!-- -------------------------------------------------------------------- -->
 
 
+    <div class="container mt-3">
+
+        <!-- Success message -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- Error message -->
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
 
 
 
-<!-- <h1>Donation Jars</h1>
-<a th:href="@{/jars/create}">Create New Jar</a>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Target Amount</th>
-        <th>Current Amount</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="jar : ${jars}">
-        <td th:text="${jar.jarId}"></td>
-        <td th:text="${jar.jarName}"></td>
-        <td th:text="${jar.targetAmount}"></td>
-        <td th:text="${jar.currentAmount}"></td>
-        <td>
-            <a th:href="@{'/donation-jars/' + ${jar.jarId} + '/donations/new'}">Donate</a>
-        </td>
-    </tr>
-    </tbody>
-</table> -->
+
+
+
+    <!-- <h1>Donation Jars</h1>
+    <a th:href="@{/jars/create}">Create New Jar</a>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Target Amount</th>
+            <th>Current Amount</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="jar : ${jars}">
+            <td th:text="${jar.jarId}"></td>
+            <td th:text="${jar.jarName}"></td>
+            <td th:text="${jar.targetAmount}"></td>
+            <td th:text="${jar.currentAmount}"></td>
+            <td>
+                <a th:href="@{'/donation-jars/' + ${jar.jarId} + '/donations/new'}">Donate</a>
+            </td>
+        </tr>
+        </tbody>
+    </table> -->
 
 <!-- 
 <div class="album py-5 bg-body-tertiary">
@@ -216,6 +235,7 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
             <div class="col" th:each="jar : ${myJars}">
+
                 <div class="card shadow-sm border-primary">
 
                     <svg class="bd-placeholder-img card-img-top"
@@ -245,6 +265,28 @@
                                    th:href="@{/jars/edit/{id}(id=${jar.jarId})}">
                                     Edit
                                 </a>
+
+<!--                                <a class="btn btn-sm btn-outline-secondary"-->
+<!--                                   th:href="@{/jars/delete/{id}(id=${jar.jarId})}">-->
+<!--                                    Delete-->
+<!--                                </a>-->
+
+                                <a class="btn btn-sm btn-outline-secondary"
+                                   th:href="@{/jars/delete/{id}(id=${jar.jarId})}"
+                                   th:if="${jar.currentAmount == 0}">
+                                    Delete
+                                </a>
+
+
+                                <!--                                <button type="button"-->
+<!--                                        class="btn btn-sm btn-outline-secondary"-->
+<!--                                        data-bs-toggle="modal"-->
+<!--                                        data-bs-target="#deleteModal"-->
+<!--                                        th:attr="data-id=${jar.jarId}">-->
+<!--                                    Delete-->
+<!--                                </button>-->
+
+
                             </div>
 
                             <small class="text-body-secondary" th:text="${jar.jarId}">ID</small>

@@ -2,8 +2,10 @@ package com.liftflow.service;
 
 import com.liftflow.model.DonationJar;
 import com.liftflow.repository.DonationJarRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -57,10 +59,21 @@ public class DonationJarService {
         }).orElseThrow(() -> new RuntimeException("DonationJar not found with id " + id));
     }
 
+//    public void delete(Integer id) {
+//        if (!repository.existsById(id)) {
+//            throw new RuntimeException("DonationJar not found with id " + id);
+//        }
+//        repository.deleteById(id);
+//    }
+
+    @Transactional
     public void delete(Integer id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("DonationJar not found with id " + id);
+
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException ex) {
+            throw new IllegalStateException("Cannot delete jar because it contains donations.");
         }
-        repository.deleteById(id);
     }
+
 }
