@@ -18,6 +18,7 @@ spring:
 
   jpa:
     hibernate:
+      globally_quoted_identifiers: true
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: none
