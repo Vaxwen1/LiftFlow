@@ -6,12 +6,8 @@
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-
 <nav class="navbar">
-    <div class="nav-left">
-        <!-- FIXED HERE -->
-        <a th:href="@{/}" class="brand">LiftFlow</a>
-    </div>
+    <div class="nav-left"><a th:href="@{/}" class="brand">LiftFlow</a></div>
     <div class="nav-right">
         <a th:href="@{/login}" class="nav-btn">Login</a>
         <a th:href="@{/register}" class="nav-btn register">Register</a>
@@ -21,23 +17,24 @@
 <section class="auth-section">
     <div class="auth-card">
         <h2>Login</h2>
-        <p class="auth-subtitle">Welcome back. Please sign in to continue.</p>
+        <p class="auth-subtitle">Welcome back. Please sign in.</p>
 
         <div th:if="${param.registered}" class="success-box">
-            <p>Registration successful! Please log in below.</p>
+            <p>Registration successful! Please log in.</p>
+        </div>
+        <div th:if="${loginError}" class="error-box">
+            <p th:text="${loginError}"></p>
         </div>
 
-        <form method="post" th:action="@{/login}">
+        <form th:action="@{/login}" method="post">
             <div class="form-group">
                 <label for="email">Email</label>
                 <input id="email" name="username" type="email" placeholder="name@example.com" required>
             </div>
-
             <div class="form-group">
                 <label for="password">Password</label>
                 <input id="password" name="password" type="password" placeholder="Your password" required>
             </div>
-
             <button type="submit" class="auth-btn">Login</button>
         </form>
 
@@ -46,6 +43,5 @@
         </p>
     </div>
 </section>
-
 </body>
 </html>

@@ -6,11 +6,8 @@
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-
 <nav class="navbar">
-    <div class="nav-left">
-        <a th:href="@{/}" class="brand">LiftFlow</a>
-    </div>
+    <div class="nav-left"><a th:href="@{/}" class="brand">LiftFlow</a></div>
     <div class="nav-right">
         <a th:href="@{/login}" class="nav-btn">Login</a>
         <a th:href="@{/register}" class="nav-btn register">Register</a>
@@ -20,45 +17,37 @@
 <section class="auth-section">
     <div class="auth-card">
         <h2>Create an account</h2>
-        <p class="auth-subtitle">Join LiftFlow and start managing users.</p>
+        <p class="auth-subtitle">Join LiftFlow and start fundraising.</p>
 
-        <!-- show only our own custom error -->
         <div th:if="${emailError}" class="error-box">
             <p th:text="${emailError}"></p>
         </div>
 
-        <!-- bind to "user" from controller -->
         <form th:action="@{/register}" th:object="${user}" method="post">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input id="username" th:field="*{username}" type="text" placeholder="john_doe" required>
+                <input id="username" th:field="*{username}" type="text" required>
             </div>
-
             <div class="form-group">
                 <label for="email">Email</label>
-                <input id="email" th:field="*{email}" type="email" placeholder="name@example.com" required>
+                <input id="email" th:field="*{email}" type="email" required>
             </div>
-
             <div class="form-group">
                 <label for="password">Password</label>
-                <input id="password" th:field="*{password}" type="password" placeholder="Min 8 characters" required>
+                <input id="password" th:field="*{password}" type="password" required>
             </div>
-
             <div class="form-group">
                 <label for="firstName">First name</label>
-                <input id="firstName" th:field="*{firstName}" type="text" placeholder="John">
+                <input id="firstName" th:field="*{firstName}" type="text">
             </div>
-
             <div class="form-group">
                 <label for="lastName">Last name</label>
-                <input id="lastName" th:field="*{lastName}" type="text" placeholder="Doe">
+                <input id="lastName" th:field="*{lastName}" type="text">
             </div>
-
             <div class="form-group">
                 <label for="phoneNumber">Phone number</label>
-                <input id="phoneNumber" th:field="*{phoneNumber}" type="text" placeholder="+1 555 123 4567">
+                <input id="phoneNumber" th:field="*{phoneNumber}" type="text">
             </div>
-
             <button type="submit" class="auth-btn">Register</button>
         </form>
 
@@ -67,6 +56,5 @@
         </p>
     </div>
 </section>
-
 </body>
 </html>

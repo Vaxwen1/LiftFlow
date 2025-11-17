@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LiftFlow - Dashboard</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-left"><a th:href="@{/dashboard}" class="brand">LiftFlow</a></div>
+    <div class="nav-right">
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="nav-btn">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<section class="auth-section">
+    <div class="auth-card">
+        <h2 th:text="'Hello, ' + ${username} + '!'">Hello</h2>
+        <p>Welcome back. What would you like to do?</p>
+        <div style="margin-top:1rem;">
+            <a th:href="@{/fundraiser/upgrade}" class="cta">Upgrade to Fundraiser</a>
+            <a th:href="@{/jars}" class="cta secondary">My Donation Jars</a>
+        </div>
+    </div>
+</section>
+</body>
+</html>

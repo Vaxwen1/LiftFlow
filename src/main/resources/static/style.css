@@ -1,261 +1,241 @@
 /* ======= Global ======= */
 body {
-    margin: 0;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    background-color: #f9fafc;
-    color: #333;
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background-color: #f9fafc;
+  color: #333;
 }
 
 /* ======= Navbar ======= */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #0052cc;
-    color: #fff;
-    padding: 0.8rem 2rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0052cc;
+  color: #fff;
+  padding: 0.8rem 2rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .navbar .brand {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #fff;
-    text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
 }
 
 .nav-right .nav-btn {
-    color: #fff;
-    text-decoration: none;
-    margin-left: 1rem;
-    border: 1px solid #fff;
-    padding: 6px 12px;
-    border-radius: 4px;
-    transition: background 0.2s, color 0.2s;
+  color: #fff;
+  text-decoration: none;
+  margin-left: 1rem;
+  border: 1px solid #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+  background: transparent;
+  cursor: pointer;
 }
 
 .nav-right .nav-btn:hover {
-    background: #fff;
-    color: #0052cc;
+  background: #fff;
+  color: #0052cc;
 }
 
 .nav-right .register {
-    background: #fff;
-    color: #0052cc;
+  background: #fff;
+  color: #0052cc;
 }
 
 .nav-right .register:hover {
-    background: #003d99;
-    color: #fff;
+  background: #003d99;
+  color: #fff;
 }
 
 /* ======= Hero Section ======= */
 .hero {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 80vh;
-    text-align: center;
-    padding: 2rem;
-    background: linear-gradient(120deg, #e6f0ff, #f9f9ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(120deg, #e6f0ff, #f9f9ff);
 }
 
 .hero-content {
-    max-width: 600px;
+  max-width: 600px;
 }
 
 .hero h1 {
-    font-size: 2.5rem;
-    color: #0052cc;
+  font-size: 2.5rem;
+  color: #0052cc;
 }
 
 .hero h1 span {
-    color: #003d99;
+  color: #003d99;
 }
 
 .hero p {
-    margin-top: 1rem;
-    color: #555;
-    font-size: 1.1rem;
+  margin-top: 1rem;
+  color: #555;
+  font-size: 1.1rem;
 }
 
 .hero-actions {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .cta {
-    display: inline-block;
-    background: #0052cc;
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 500;
-    margin: 0 8px;
-    transition: background 0.2s;
+  display: inline-block;
+  background: #0052cc;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  margin: 0 8px;
+  transition: background 0.2s;
 }
 
 .cta:hover {
-    background: #003d99;
+  background: #003d99;
 }
 
 .cta.secondary {
-    background: #fff;
-    color: #0052cc;
-    border: 1px solid #0052cc;
+  background: #fff;
+  color: #0052cc;
+  border: 1px solid #0052cc;
 }
 
 .cta.secondary:hover {
-    background: #e6f0ff;
-}
-
-/* ======= Footer ======= */
-footer {
-    text-align: center;
-    padding: 1rem;
-    background: #f0f0f0;
-    color: #666;
-    font-size: 0.9rem;
+  background: #e6f0ff;
 }
 
 /* ======= Auth pages ======= */
 .auth-section {
-    min-height: calc(100vh - 60px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f4f6fb;
-    padding: 2rem 1rem;
+  min-height: calc(100vh - 60px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f6fb;
+  padding: 2rem 1rem;
 }
 
 .auth-card {
-    background: #fff;
-    padding: 2rem 2.5rem;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    width: 100%;
-    max-width: 420px;
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 420px;
 }
 
 .auth-card h2 {
-    margin: 0 0 0.5rem;
+  margin: 0 0 0.5rem;
 }
 
 .auth-subtitle {
-    margin-bottom: 1.5rem;
-    color: #666;
+  margin-bottom: 1.5rem;
+  color: #666;
 }
 
 .form-group {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-weight: 500;
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
 }
 
 .form-group input {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #d5d9e0;
-    border-radius: 5px;
-    font-size: 0.95rem;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d5d9e0;
+  border-radius: 5px;
+  font-size: 0.95rem;
 }
 
 .form-group input:focus {
-    outline: none;
-    border-color: #0052cc;
-    box-shadow: 0 0 0 2px rgba(0,82,204,0.1);
+  outline: none;
+  border-color: #0052cc;
+  box-shadow: 0 0 0 2px rgba(0,82,204,0.1);
 }
 
 .auth-btn {
-    width: 100%;
-    background: #0052cc;
-    color: #fff;
-    border: none;
-    padding: 9px 0;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    margin-top: 0.5rem;
+  width: 100%;
+  background: #0052cc;
+  color: #fff;
+  border: none;
+  padding: 9px 0;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0.5rem;
 }
 
 .auth-btn:hover {
-    background: #003d99;
+  background: #003d99;
 }
 
 .auth-footer {
-    margin-top: 1rem;
-    text-align: center;
-    color: #666;
+  margin-top: 1rem;
+  text-align: center;
+  color: #666;
 }
 
 .auth-footer a {
-    color: #0052cc;
-    text-decoration: none;
+  color: #0052cc;
+  text-decoration: none;
 }
 
 .auth-footer a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .error-box {
-    background: #ffecec;
-    color: #b20000;
-    border: 1px solid #f5c2c2;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
+  background: #ffecec;
+  color: #b20000;
+  border: 1px solid #f5c2c2;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
 }
 
 .success-box {
-    background: #e6ffe6;
-    color: #046204;
-    border: 1px solid #c2f0c2;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
+  background: #e6ffe6;
+  color: #046204;
+  border: 1px solid #c2f0c2;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
 }
 
-/* ======= User Table ======= */
+/* ======= User Table / Jars ======= */
 .content {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 .user-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    border-radius: 8px;
-    overflow: hidden;
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .user-table th, .user-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #eee;
-    text-align: left;
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
 }
 
 .user-table th {
-    background: #0052cc;
-    color: #fff;
+  background: #0052cc;
+  color: #fff;
 }
-
-.table-btn {
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    color: #fff;
-}
-
-.table-btn.edit { background: #0052cc; }
-.table-btn.delete { background: #d9534f; }
-.table-btn.edit:hover { background: #003d99; }
-.table-btn.delete:hover { background: #c9302c; }

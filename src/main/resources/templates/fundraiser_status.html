@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LiftFlow - KYC Status</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <a th:href="@{/dashboard}" class="brand">LiftFlow</a>
+    </div>
+    <div class="nav-right">
+        <a th:href="@{/jars/new}" class="nav-btn register">Create Donation Jar</a>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="nav-btn">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<section class="auth-section">
+    <div class="auth-card">
+        <h2 th:text="'KYC Status for ' + ${user.username}">KYC Status</h2>
+
+        <div th:if="${kyc == null}">
+            <p>You have not submitted your passport details yet.</p>
+            <a th:href="@{/fundraiser/upgrade}" class="cta">Submit KYC</a>
+        </div>
+
+        <div th:if="${kyc != null}">
+            <p><strong>Status:</strong> <span th:text="${kyc.status}">PENDING</span></p>
+            <p><strong>Passport Number:</strong> <span th:text="${kyc.passportNumber}">123456789</span></p>
+            <p><strong>Issuing Country:</strong> <span th:text="${kyc.issuingCountry}">IE</span></p>
+            <p><strong>Submitted At:</strong> <span th:text="${kyc.submittedAt}">2025-11-17T12:00</span></p>
+
+            <div th:if="${kyc.imagePath}">
+                <h3>Submitted Passport Image</h3>
+                <img th:src="${kyc.imagePath}"
+                     alt="Passport Image"
+                     style="max-width:300px; border:1px solid #ccc; border-radius:6px; margin-bottom:1rem;">
+            </div>
+
+            <div style="margin-top:1rem;">
+                <a th:href="@{/jars/new}" class="cta">Create Donation Jar</a>
+                <a th:href="@{/dashboard}" class="cta secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

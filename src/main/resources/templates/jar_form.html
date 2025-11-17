@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Donation Jar</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-left"><a th:href="@{/dashboard}" class="brand">LiftFlow</a></div>
+    <div class="nav-right">
+        <a th:href="@{/jars}" class="nav-btn">Back</a>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="nav-btn">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<section class="auth-section">
+    <div class="auth-card">
+        <h2>Create Donation Jar</h2>
+
+        <form th:action="@{/jars}" th:object="${jar}" method="post">
+            <div class="form-group">
+                <label for="jarName">Jar name</label>
+                <input id="jarName" th:field="*{jarName}" type="text"
+                       placeholder="Help for local shelter" required>
+            </div>
+
+            <div class="form-group">
+                <label for="targetAmount">Target amount</label>
+                <input id="targetAmount" th:field="*{targetAmount}" type="number" step="0.01"
+                       placeholder="1000.00" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input id="description" th:field="*{description}" type="text"
+                       placeholder="Describe your cause">
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">End date (optional)</label>
+                <input id="endDate" th:field="*{endDate}" type="date">
+            </div>
+
+            <button type="submit" class="auth-btn">Create</button>
+        </form>
+    </div>
+</section>
+</body>
+</html>

@@ -32,7 +32,7 @@ public class DonationJar {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    // связь с пользователем — кто создал
+    // linkage with users - who created
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
@@ -43,9 +43,30 @@ public class DonationJar {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public DonationJar() {}
+    public DonationJar() {
+        // sensible default for new jars
+        this.currentAmount = BigDecimal.ZERO;
+    }
 
-    // ----- геттеры/сеттеры -----
+    @PrePersist
+    public void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        if (this.startDate == null) {
+            this.startDate = LocalDate.now();
+        }
+        if (this.currentAmount == null) {
+            this.currentAmount = BigDecimal.ZERO;
+        }
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    // ----- getters/setters -----
     public Integer getJarId() { return jarId; }
     public void setJarId(Integer jarId) { this.jarId = jarId; }
 
