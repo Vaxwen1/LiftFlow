@@ -21,11 +21,23 @@ public class DonationJarController {
     private DonationJarService service;
 
     // Thymeleaf: Список всех банок
+//    @GetMapping
+//    public String listJars(Model model) {
+//        List<DonationJar> jars = service.getAll();
+//        model.addAttribute("jars", jars);
+//        return "Donation_Jar/list";
+//    }
+
     @GetMapping
     public String listJars(Model model) {
-        List<DonationJar> jars = service.getAll();
-        model.addAttribute("jars", jars);
-        return "jars/list"; // Шаблон: src/main/resources/templates/jars/list.html
+        List<DonationJar> jars = null;
+        try {
+            jars = service.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("jars", jars != null ? jars : List.of());
+        return "jars/list";
     }
 
 
