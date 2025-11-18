@@ -32,7 +32,6 @@ public class DonationJar {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    // связь с пользователем — кто создал
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Jar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="">
+
+<header
+        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-body-tertiary p-3"
+>
+    <div class="col-md-3 mb-2 mb-md-0">
+        <a
+                href="images/logo.jpg"
+                class="d-inline-flex link-body-emphasis text-decoration-none"
+        >
+            <!-- <svg
+              class="bi"
+              width="40"
+              height="32"
+              role="img"
+              aria-label="Bootstrap"
+            >
+              <use xlink:href="#bootstrap"></use>
+            </svg> -->
+
+            <img th:src="@{/images/logo.jpg}"
+                 alt="Bootstrap"
+                 width="40"
+                 height="32"
+            >
+
+        </a>
+    </div>
+    <ul
+            class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"
+    >
+        <li><a th:href="@{/}" class="nav-link px-2 link-secondary">LiftFlow</a></li>
+        <li><a th:href="@{/jars}" class="nav-link px-2">Donate</a></li>
+        <li><a th:href="@{/posts/}" class="nav-link px-2">Posts</a></li>
+        <li><a th:href="@{/}" class="nav-link px-2">FAQs</a></li>
+        <li><a th:href="@{/}" class="nav-link px-2">Contact</a></li>
+    </ul>
+    <div class="col-md-3 text-end">
+        <!--            <button type="button" class="btn btn-outline-primary me-2">-->
+        <!--              Login-->
+        <!--            </button>-->
+        <!--            <button type="button" class="btn btn-primary">Sign-up</button>-->
+    </div>
+</header>
+
+<main class="container my-5">
+
+    <h2 class="text-center">Edit Donation Jar</h2>
+
+    <form th:action="@{/jars/edit/{id}(id=${jar.jarId})}" method="post" th:object="${jar}" class="shadow-sm p-4 rounded col-lg-6 mx-auto">
+
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" th:field="*{jarName}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Target Amount</label>
+            <input type="number" class="form-control" th:field="*{targetAmount}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" th:field="*{description}"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Start Date</label>
+            <input type="date" class="form-control" th:field="*{startDate}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">End Date</label>
+            <input type="date" class="form-control" th:field="*{endDate}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+
+        <a th:href="@{/jars}" class="btn btn-secondary">Cancel</a>
+
+    </form>
+
+
+</main>
+
+
+<!-- ---------------------------- FOOTER ---------------------------------------- -->
+
+<div class="container">
+    <footer class="py-0 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item">
+                <a th:href="@{/}" class="nav-link px-2 text-body-secondary">LiftFlow</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/jars}" class="nav-link px-2 text-body-secondary">Donate</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/posts/}" class="nav-link px-2 text-body-secondary">Posts</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/}" class="nav-link px-2 text-body-secondary">FAQs</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/}" class="nav-link px-2 text-body-secondary">Contact</a>
+            </li>
+        </ul>
+        <p class="text-center text-body-secondary">© 2025 Company, Inc</p>
+    </footer>
+</div>
+
+</div>
+</footer>
+
+<script
+        src="../assets/dist/js/bootstrap.bundle.min.js"
+        class="astro-vvvwv3sm"
+></script>
+
+<!-- -------------------------------------------------------------------- -->
+
+</body>
+</html>

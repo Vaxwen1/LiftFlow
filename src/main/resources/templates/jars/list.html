@@ -24,6 +24,8 @@
     <link href="stylesheets/headers.css" rel="stylesheet" />
     <link href="stylesheets/sticky-footer.css" rel="stylesheet" />
 
+
+
   </head>
 <body>
     <!-- col-sm-12 col-md-8 col-lg-6 mx-auto -->
@@ -75,8 +77,8 @@
               </svg> -->
 
               <img th:src="@{/images/logo.jpg}"
-                    alt="Bootstrap" 
-                    width="40" 
+                    alt="Bootstrap"
+                    width="40"
                     height="32"
                 >
 
@@ -85,118 +87,38 @@
           <ul
             class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"
           >
-            <li><a href="#" class="nav-link px-2 link-secondary">LiftFlow</a></li>
-            <li><a href="#" class="nav-link px-2">Donate</a></li>
-            <li><a href="#" class="nav-link px-2">Raise</a></li>
-            <li><a href="#" class="nav-link px-2">FAQs</a></li>
-            <li><a href="#" class="nav-link px-2">Contact</a></li>
+            <li><a th:href="@{/}" class="nav-link px-2 link-secondary">LiftFlow</a></li>
+            <li><a th:href="@{/jars}" class="nav-link px-2">Donate</a></li>
+            <li><a th:href="@{/posts/}" class="nav-link px-2">Posts</a></li>
+            <li><a th:href="@{/}" class="nav-link px-2">FAQs</a></li>
+            <li><a th:href="@{/}" class="nav-link px-2">Contact</a></li>
           </ul>
           <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-outline-primary me-2">
-              Login
-            </button>
-            <button type="button" class="btn btn-primary">Sign-up</button>
+<!--            <button type="button" class="btn btn-outline-primary me-2">-->
+<!--              Login-->
+<!--            </button>-->
+<!--            <button type="button" class="btn btn-primary">Sign-up</button>-->
           </div>
     </header>
     <!-- -------------------------------------------------------------------- -->
 
 
+    <div class="container mt-3">
 
-
-
-<!-- <h1>Donation Jars</h1>
-<a th:href="@{/jars/create}">Create New Jar</a>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Target Amount</th>
-        <th>Current Amount</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="jar : ${jars}">
-        <td th:text="${jar.jarId}"></td>
-        <td th:text="${jar.jarName}"></td>
-        <td th:text="${jar.targetAmount}"></td>
-        <td th:text="${jar.currentAmount}"></td>
-        <td>
-            <a th:href="@{'/donation-jars/' + ${jar.jarId} + '/donations/new'}">Donate</a>
-        </td>
-    </tr>
-    </tbody>
-</table> -->
-
-<!-- 
-<div class="album py-5 bg-body-tertiary">
-        <div class="container">
-          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-
-
-
-            <div class="col">
-              <div class="card shadow-sm">
-                <svg
-                  aria-label="Placeholder: Thumbnail"
-                  class="bd-placeholder-img card-img-top"
-                  height="225"
-                  preserveAspectRatio="xMidYMid slice"
-                  role="img"
-                  width="100%"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <title>Placeholder</title>
-                  <rect width="100%" height="100%" fill="#55595c"></rect>
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                    Thumbnail
-                  </text>
-                </svg>
-                <div class="card-body">
-                  <p class="card-text">
-                    This is a wider card with supporting text below as a natural
-                    lead-in to additional content. This content is a little bit
-                    longer.
-                  </p>
-                  <div
-                    class="d-flex justify-content-between align-items-center"
-                  >
-                    <div class="btn-group">
-                      <button
-                        type="button"
-                        class="btn btn-sm btn-outline-secondary"
-                      >
-                        View
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-sm btn-outline-secondary"
-                      >
-                        Edit
-                      </button>
-                    </div>
-                    <small class="text-body-secondary">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
-
-          </div>
+        <!-- Success message -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-</div> -->
 
-
-
-
-
+        <!-- Error message -->
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
 
 <h1 class="mb-4 text-center">Donation Jars</h1>
-
 
 <div class="col-lg-6 col-xxl-4 my-5 mx-auto">
   <div class="d-grid gap-2">
@@ -204,10 +126,7 @@
   </div>
 </div>
 
-
-
 <!-- -------------------------------------------------------------------------------------------------- -->
-
 
 <h2 class="mb-4 text-center">My Jars</h2>
 
@@ -216,6 +135,7 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
             <div class="col" th:each="jar : ${myJars}">
+
                 <div class="card shadow-sm border-primary">
 
                     <svg class="bd-placeholder-img card-img-top"
@@ -245,6 +165,28 @@
                                    th:href="@{/jars/edit/{id}(id=${jar.jarId})}">
                                     Edit
                                 </a>
+
+<!--                                <a class="btn btn-sm btn-outline-secondary"-->
+<!--                                   th:href="@{/jars/delete/{id}(id=${jar.jarId})}">-->
+<!--                                    Delete-->
+<!--                                </a>-->
+
+                                <a class="btn btn-sm btn-outline-secondary"
+                                   th:href="@{/jars/delete/{id}(id=${jar.jarId})}"
+                                   th:if="${jar.currentAmount == 0}">
+                                    Delete
+                                </a>
+
+
+                                <!--                                <button type="button"-->
+<!--                                        class="btn btn-sm btn-outline-secondary"-->
+<!--                                        data-bs-toggle="modal"-->
+<!--                                        data-bs-target="#deleteModal"-->
+<!--                                        th:attr="data-id=${jar.jarId}">-->
+<!--                                    Delete-->
+<!--                                </button>-->
+
+
                             </div>
 
                             <small class="text-body-secondary" th:text="${jar.jarId}">ID</small>
@@ -261,13 +203,7 @@
 <hr class="my-5">
 <h2 class="mb-4 text-center">All Jars</h2>
 
-
-
-
-
 <!-- -------------------------------------------------------------------------------------------------- -->
-
-
 
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
@@ -314,37 +250,25 @@
     </div>
 </div>
 
-
     <!-- ---------------------------- FOOTER ---------------------------------------- -->
-
-    <footer class="footer mt-auto py-3 bg-body-tertiary">
-      <div class="container">
-
-
-
-        
-
-
-
-
 
         <div class="container">
       <footer class="py-0 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
           <li class="nav-item">
-            <a href="#" class="nav-link px-2 text-body-secondary">LiftFlow</a>
+            <a th:href="@{/}" class="nav-link px-2 text-body-secondary">LiftFlow</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link px-2 text-body-secondary">Donate</a>
+            <a th:href="@{/jars}" class="nav-link px-2 text-body-secondary">Donate</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link px-2 text-body-secondary">Raise</a>
+            <a th:href="@{/posts/}" class="nav-link px-2 text-body-secondary">Posts</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link px-2 text-body-secondary">FAQs</a>
+            <a th:href="@{/}" class="nav-link px-2 text-body-secondary">FAQs</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link px-2 text-body-secondary">Contact</a>
+            <a th:href="@{/}" class="nav-link px-2 text-body-secondary">Contact</a>
           </li>
         </ul>
         <p class="text-center text-body-secondary">© 2025 Company, Inc</p>
@@ -354,20 +278,12 @@
       </div>
     </footer>
 
-
-
-
-
     <script
       src="../assets/dist/js/bootstrap.bundle.min.js"
       class="astro-vvvwv3sm"
     ></script>
 
-
-
     <!-- -------------------------------------------------------------------- -->
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
