@@ -13,9 +13,13 @@ public class FundRaiserPost {
     @Column(name = "post_id")
     private Integer postId;
 
+    // NEW — correct field for jar_id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fund_raiser_id", nullable = false)
-    private FundRaiser fundRaiser;
+    @JoinColumn(name = "jar_id", nullable = false)
+    private DonationJar donationJar;
+
+    @Column(name = "post_title")
+    private String postTitle;
 
     @Column(name = "content", nullable = false, columnDefinition = "NVARCHAR(MAX)")
     private String content;
@@ -46,37 +50,114 @@ public class FundRaiserPost {
 
     public FundRaiserPost() {}
 
-    // getters and setters
-    public Integer getPostId() { return postId; }
-    public void setPostId(Integer postId) { this.postId = postId; }
+    // --------------------------------------------------------------------
+    // GETTERS AND SETTERS
+    // --------------------------------------------------------------------
 
-    public FundRaiser getFundRaiser() { return fundRaiser; }
-    public void setFundRaiser(FundRaiser fundRaiser) { this.fundRaiser = fundRaiser; }
+    public Integer getPostId() {
+        return postId;
+    }
 
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
+    public void setPostId(Integer postId) {
+        this.postId = postId;
+    }
 
-    public String getMediaUrl() { return mediaUrl; }
-    public void setMediaUrl(String mediaUrl) { this.mediaUrl = mediaUrl; }
+    // ✔ FIXED — correct getter/setter for jar_id (DonationJar)
+    public DonationJar getDonationJar() {
+        return donationJar;
+    }
 
-    public String getPostType() { return postType; }
-    public void setPostType(String postType) { this.postType = postType; }
+    public void setDonationJar(DonationJar donationJar) {
+        this.donationJar = donationJar;
+    }
 
-    public Integer getLikesCount() { return likesCount; }
-    public void setLikesCount(Integer likesCount) { this.likesCount = likesCount; }
+    public String getPostTitle() {
+        return postTitle;
+    }
 
-    public Integer getCommentsCount() { return commentsCount; }
-    public void setCommentsCount(Integer commentsCount) { this.commentsCount = commentsCount; }
+    public void setPostTitle(String postTitle) {
+        this.postTitle = postTitle;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public String getContent() {
+        return content;
+    }
 
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-    public List<FundRaiserPostLike> getLikes() { return likes; }
-    public void setLikes(List<FundRaiserPostLike> likes) { this.likes = likes; }
+    public String getMediaUrl() {
+        return mediaUrl;
+    }
 
-    public List<FundRaiserPostComment> getComments() { return comments; }
-    public void setComments(List<FundRaiserPostComment> comments) { this.comments = comments; }
+    public void setMediaUrl(String mediaUrl) {
+        this.mediaUrl = mediaUrl;
+    }
+
+    public String getPostType() {
+        return postType;
+    }
+
+    public void setPostType(String postType) {
+        this.postType = postType;
+    }
+
+    public Integer getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(Integer likesCount) {
+        this.likesCount = likesCount;
+    }
+
+    public Integer getCommentsCount() {
+        return commentsCount;
+    }
+
+    public void setCommentsCount(Integer commentsCount) {
+        this.commentsCount = commentsCount;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public List<FundRaiserPostLike> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<FundRaiserPostLike> likes) {
+        this.likes = likes;
+    }
+
+    public List<FundRaiserPostComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<FundRaiserPostComment> comments) {
+        this.comments = comments;
+    }
+
+    public String getTitle()
+    {
+        return postTitle;
+    }
+
+    public void setTitle(String test)
+    {
+        this.postTitle = test;
+    }
 }

@@ -17,13 +17,30 @@
 
 <section class="auth-section">
     <div class="auth-card">
-        <h2 th:text="'Hello, ' + ${username} + '!'">Hello</h2>
+        <h2 th:text="'Hello, ' + ${loggedUser.username} + '!'">Hello</h2>
         <p>Welcome back. What would you like to do?</p>
-        <div style="margin-top:1rem;">
-            <a th:href="@{/fundraiser/upgrade}" class="cta">Upgrade to Fundraiser</a>
-            <a th:href="@{/jars}" class="cta secondary">My Donation Jars</a>
+
+        <div style="margin-top: 2rem; text-align:center;">
+
+            <!-- Show centered UPGRADE button when NOT fundraiser -->
+            <div th:if="${!loggedUser.fundraiser}" style="text-align:center;">
+                <a th:if="${!loggedUser.fundraiser}"
+                   th:href="@{/fundraiser/upgrade}"
+                   class="cta">
+                    Upgrade to Fundraiser
+                </a>
+            </div>
+
+            <!-- Show MY DONATION JARS when fundaiser -->
+            <div th:if="${loggedUser.fundraiser}">
+                <a th:href="@{/jars}" class="cta secondary">
+                    My Donation Jars
+                </a>
+            </div>
+
         </div>
     </div>
 </section>
+
 </body>
 </html>

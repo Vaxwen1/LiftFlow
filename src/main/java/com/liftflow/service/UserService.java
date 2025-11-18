@@ -2,6 +2,8 @@ package com.liftflow.service;
 
 import com.liftflow.model.User;
 import com.liftflow.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 

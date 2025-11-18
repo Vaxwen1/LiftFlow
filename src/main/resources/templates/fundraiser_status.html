@@ -12,7 +12,7 @@
         <a th:href="@{/dashboard}" class="brand">LiftFlow</a>
     </div>
     <div class="nav-right">
-        <a th:href="@{/jars/new}" class="nav-btn register">Create Donation Jar</a>
+        <a th:href="@{/templates/Jars/new}" class="nav-btn register">Create Donation Jar</a>
         <form th:action="@{/logout}" method="post" style="display:inline">
             <button type="submit" class="nav-btn">Logout</button>
         </form>
@@ -42,7 +42,7 @@
             </div>
 
             <div style="margin-top:1rem;">
-                <a th:href="@{/jars/new}" class="cta">Create Donation Jar</a>
+                <a th:href="@{/templates/Jars/new}" class="cta">Create Donation Jar</a>
                 <a th:href="@{/dashboard}" class="cta secondary">Back to Dashboard</a>
             </div>
         </div>

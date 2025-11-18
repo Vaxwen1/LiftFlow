@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LiftFlow - Posts</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+<div class="page-wrapper">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a th:href="@{/}" class="brand">LiftFlow</a>
+        </div>
+
+        <div class="nav-right">
+
+            <!-- IF NOT LOGGED IN -->
+            <span th:if="${loggedUser == null}">
+                <a th:href="@{/login}" class="nav-btn">Login</a>
+                <a th:href="@{/register}" class="nav-btn register">Register</a>
+            </span>
+
+            <!-- IF LOGGED IN -->
+            <span th:if="${loggedUser != null}" class="user-box">
+                <a th:href="@{/dashboard}" class="username-link">
+                    <span th:text="${loggedUser.username}"></span>
+                </a>
+                <a th:href="@{/logout}" class="nav-btn">Logout</a>
+            </span>
+
+        </div>
+    </nav>
+
+    <!-- POSTS PAGE CONTENT -->
+    <div class="posts-page-wrapper">
+
+        <h1 class="posts-title">Fundraiser Posts</h1>
+
+        <!-- No Posts -->
+        <div th:if="${posts.isEmpty()}" class="no-posts">
+            <p>No posts yet.</p>
+        </div>
+
+        <!-- Post List -->
+        <div th:each="post : ${posts}" th:if="${post != null}" class="post">
+
+            <!-- Post Title -->
+            <div class="title">
+                <span th:text="${post.postTitle}">Post Title</span>
+            </div>
+
+            <!-- Created At -->
+            <div class="meta">
+                <span>Created at: </span>
+                <span th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy')}"></span>
+            </div>
+
+            <!-- Content -->
+            <p th:text="${post.content}"></p>
+
+            <!-- Image -->
+            <div th:if="${post.mediaUrl != null}">
+                <img th:src="@{'/img/postimg/' + ${post.mediaUrl}}" />
+            </div>
+
+            <!-- Likes & Comments -->
+            <div class="post-stats">
+
+                <!-- Likes -->
+                <span class="stat likes">
+                    ❤️ <span th:text="${post.likesCount}">0</span> Likes
+                </span>
+
+                <!-- Comments -->
+                <span class="stat comments">
+                    💬 <span th:text="${post.commentsCount}">0</span> Comments
+                </span>
+
+                <!-- DONATE BUTTON -->
+                <a th:href="@{'/donation/' + ${post.donationJar.jarId} + '/donations/new'}"
+                   class="donate-btn">
+                    💝 Donate
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div> <!-- posts-page-wrapper -->
+</div> <!-- page-wrapper -->
+
+<!-- FOOTER -->
+<footer class="posts-footer">
+    <p>&copy; 2025 LiftFlow. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

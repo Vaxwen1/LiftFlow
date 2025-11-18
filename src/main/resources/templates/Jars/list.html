@@ -88,7 +88,7 @@
             class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"
           >
             <li><a th:href="@{/}" class="nav-link px-2 link-secondary">LiftFlow</a></li>
-            <li><a th:href="@{/jars}" class="nav-link px-2">Donate</a></li>
+            <li><a th:href="@{/templates/Jars}" class="nav-link px-2">Donate</a></li>
             <li><a th:href="@{/posts/}" class="nav-link px-2">Posts</a></li>
             <li><a th:href="@{/}" class="nav-link px-2">FAQs</a></li>
             <li><a th:href="@{/}" class="nav-link px-2">Contact</a></li>
@@ -122,7 +122,7 @@
 
 <div class="col-lg-6 col-xxl-4 my-5 mx-auto">
   <div class="d-grid gap-2">
-    <a class="btn btn-primary" th:href="@{/jars/create}">Create New Jar</a>
+    <a class="btn btn-primary" th:href="@{/templates/Jars/create}">Create New Jar</a>
   </div>
 </div>
 
@@ -162,7 +162,7 @@
                                 </a>
 
                                 <a class="btn btn-sm btn-outline-secondary"
-                                   th:href="@{/jars/edit/{id}(id=${jar.jarId})}">
+                                   th:href="@{/templates/Jars/edit/{id}(id=${jar.jarId})}">
                                     Edit
                                 </a>
 
@@ -172,7 +172,7 @@
 <!--                                </a>-->
 
                                 <a class="btn btn-sm btn-outline-secondary"
-                                   th:href="@{/jars/delete/{id}(id=${jar.jarId})}"
+                                   th:href="@{/templates/Jars/delete/{id}(id=${jar.jarId})}"
                                    th:if="${jar.currentAmount == 0}">
                                     Delete
                                 </a>
@@ -259,7 +259,7 @@
             <a th:href="@{/}" class="nav-link px-2 text-body-secondary">LiftFlow</a>
           </li>
           <li class="nav-item">
-            <a th:href="@{/jars}" class="nav-link px-2 text-body-secondary">Donate</a>
+            <a th:href="@{/templates/Jars}" class="nav-link px-2 text-body-secondary">Donate</a>
           </li>
           <li class="nav-item">
             <a th:href="@{/posts/}" class="nav-link px-2 text-body-secondary">Posts</a>

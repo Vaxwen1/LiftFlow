@@ -2,7 +2,6 @@ package com.liftflow.controller;
 
 import com.liftflow.model.User;
 import com.liftflow.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
@@ -22,73 +20,32 @@ public class HomeController {
     }
 
     // --------------------------
-    // Landing / Dashboard
+    // Home Page (Public)
     // --------------------------
     @GetMapping("/")
-    public String home(HttpSession session, Model model) {
-        User current = (User) session.getAttribute("currentUser");
-        if (current == null) {
-            return "home"; // public landing page
-        }
-        model.addAttribute("username", current.getUsername());
-        return "dashboard";
+    public String home() {
+        return "home"; // Public landing page
     }
 
+    // --------------------------
+    // Dashboard (Requires Login)
+    // Spring Security controls access
+    // --------------------------
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session, Model model) {
-        User current = (User) session.getAttribute("currentUser");
-        if (current == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("username", current.getUsername());
+    public String dashboard() {
         return "dashboard";
     }
 
     // --------------------------
-    // Login
+    // Login (Spring Security handles POST)
     // --------------------------
     @GetMapping("/login")
-    public String loginPage(HttpSession session, Model model) {
-        User current = (User) session.getAttribute("currentUser");
-        if (current != null) {
-            model.addAttribute("username", current.getUsername());
-            return "dashboard";
-        }
+    public String loginPage() {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String doLogin(@RequestParam("username") String email,
-                          @RequestParam("password") String password,
-                          HttpSession session,
-                          Model model) {
-
-        // Very simple login: find user by email and compare plain password
-        User found = userService.findAll().stream()
-                .filter(u -> u.getEmail() != null && u.getEmail().equalsIgnoreCase(email))
-                .findFirst()
-                .orElse(null);
-
-        if (found == null || found.getPassword() == null || !found.getPassword().equals(password)) {
-            model.addAttribute("loginError", "Invalid email or password");
-            return "login";
-        }
-
-        session.setAttribute("currentUser", found);
-        return "redirect:/dashboard";
-    }
-
     // --------------------------
-    // Logout
-    // --------------------------
-    @PostMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/login";
-    }
-
-    // --------------------------
-    // Registration
+    // Registration Form
     // --------------------------
     @GetMapping("/register")
     public String registerForm(Model model) {
@@ -96,6 +53,9 @@ public class HomeController {
         return "register";
     }
 
+    // --------------------------
+    // Registration Submit
+    // --------------------------
     @PostMapping("/register")
     public String registerSubmit(
             @Valid @ModelAttribute("user") User user,
@@ -106,20 +66,25 @@ public class HomeController {
             return "register";
         }
 
+        // Check email uniqueness
         boolean emailExists = userService.findAll().stream()
                 .anyMatch(u -> u.getEmail() != null
                         && user.getEmail() != null
                         && u.getEmail().equalsIgnoreCase(user.getEmail()));
+
         if (emailExists) {
-            model.addAttribute("user", user);
             model.addAttribute("emailError", "Email already registered");
             return "register";
         }
 
-        if (user.getRole() == '\0') user.setRole('D');  // Donor
+        // Set default values if empty
+        if (user.getRole() == '\0') user.setRole('D');   // Donor
         if (user.getStatus() == '\0') user.setStatus('A'); // Active
 
+        // Save (with BCrypt encode inside service)
         userService.create(user);
+
+        // Redirect with message
         return "redirect:/login?registered=true";
     }
 }

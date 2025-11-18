@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Post</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <h2>Create a New Post</h2>
+
+    <form th:action="@{'/posts/create/' + ${jarId}}" method="post">
+
+        <label>Post Title</label>
+        <input type="text" name="postTitle" required>
+
+        <label>Content</label>
+        <textarea name="content" rows="4"></textarea>
+
+        <label>Image URL (optional)</label>
+        <input type="text" name="mediaUrl">
+
+        <button type="submit">Create Post</button>
+
+    </form>
+
+    <p><a th:href="@{/posts}">← Back to Posts</a></p>
+
+</div>
+
+</body>
+</html>

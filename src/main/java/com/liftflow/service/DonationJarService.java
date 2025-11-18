@@ -21,6 +21,11 @@ public class DonationJarService {
     @Autowired
     private DonationJarRepository repository;
 
+    public DonationJarService(DonationJarRepository repository)
+    {
+        this.repository = repository;
+    }
+
     public List<DonationJar> getAll() {
         return repository.findAll();
     }

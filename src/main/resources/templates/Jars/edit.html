@@ -37,7 +37,7 @@
             class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"
     >
         <li><a th:href="@{/}" class="nav-link px-2 link-secondary">LiftFlow</a></li>
-        <li><a th:href="@{/jars}" class="nav-link px-2">Donate</a></li>
+        <li><a th:href="@{/templates/Jars}" class="nav-link px-2">Donate</a></li>
         <li><a th:href="@{/posts/}" class="nav-link px-2">Posts</a></li>
         <li><a th:href="@{/}" class="nav-link px-2">FAQs</a></li>
         <li><a th:href="@{/}" class="nav-link px-2">Contact</a></li>
@@ -54,7 +54,7 @@
 
     <h2 class="text-center">Edit Donation Jar</h2>
 
-    <form th:action="@{/jars/edit/{id}(id=${jar.jarId})}" method="post" th:object="${jar}" class="shadow-sm p-4 rounded col-lg-6 mx-auto">
+    <form th:action="@{/templates/Jars/edit/{id}(id=${jar.jarId})}" method="post" th:object="${jar}" class="shadow-sm p-4 rounded col-lg-6 mx-auto">
 
         <div class="mb-3">
             <label class="form-label">Name</label>
@@ -83,7 +83,7 @@
 
         <button type="submit" class="btn btn-primary">Save</button>
 
-        <a th:href="@{/jars}" class="btn btn-secondary">Cancel</a>
+        <a th:href="@{/templates/Jars}" class="btn btn-secondary">Cancel</a>
 
     </form>
 
@@ -100,7 +100,7 @@
                 <a th:href="@{/}" class="nav-link px-2 text-body-secondary">LiftFlow</a>
             </li>
             <li class="nav-item">
-                <a th:href="@{/jars}" class="nav-link px-2 text-body-secondary">Donate</a>
+                <a th:href="@{/templates/Jars}" class="nav-link px-2 text-body-secondary">Donate</a>
             </li>
             <li class="nav-item">
                 <a th:href="@{/posts/}" class="nav-link px-2 text-body-secondary">Posts</a>

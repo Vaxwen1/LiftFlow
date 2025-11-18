@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>LiftFlow - Home</title>
@@ -6,9 +8,27 @@
 </head>
 <body>
 <nav class="navbar">
+    <div class="nav-left">
+        <a href="/" class="brand">LiftFlow</a>
+    </div>
+
     <div class="nav-right">
+
+        <!-- IF NOT LOGGED IN -->
+        <span th:if="${loggedUser == null}">
+            <a th:href="@{/login}" class="nav-btn">Login</a>
+            <a th:href="@{/register}" class="nav-btn register">Register</a>
+        </span>
+
+        <!-- IF LOGGED IN -->
+        <span th:if="${loggedUser != null}" class="user-box">
+            <span class="username" th:text="${loggedUser.username}"></span>
+            <a th:href="@{/logout}" class="nav-btn">Logout</a>
+        </span>
+
     </div>
 </nav>
+
 <section class="hero">
     <div class="hero-content">
         <h1>Welcome to <span>LiftFlow</span></h1>
@@ -18,5 +38,8 @@
         </div>
     </div>
 </section>
+<footer>
+    <p>&copy; 2025 LiftFlow. All rights reserved.</p>
+</footer>
 </body>
 </html>

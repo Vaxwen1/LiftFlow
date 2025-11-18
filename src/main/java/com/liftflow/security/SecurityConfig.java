@@ -2,7 +2,9 @@ package com.liftflow.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -10,26 +12,32 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+    private final UserDetailsService userDetailsService;
+
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/",               // homepage allowed
-                                "/login",          // login allowed
-                                "/register",       // register page allowed
-                                "/style.css",      // your CSS file
+                                "/",
+                                "/login",
+                                "/register",
+                                "/style.css",
+                                "/jars/list",
                                 "/images/**",
                                 "/css/**",
-                                "/static/**",
-                                "/posts/"
+                                "/static/**"
                         ).permitAll()
-                        .anyRequest().authenticated()   // everything else requires login
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
+                        .defaultSuccessUrl("/posts")
                         .loginPage("/login")
-                        .defaultSuccessUrl("/posts/", true)
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -38,7 +46,18 @@ public class SecurityConfig {
                         .permitAll()
                 );
 
+        // IMPORTANT: connect the UserDetailsService + Encoder
+        http.authenticationProvider(authenticationProvider(userDetailsService));
+
         return http.build();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
 
     @Bean

@@ -16,29 +16,27 @@ public class FundRaiserPostController {
         this.service = service;
     }
 
-    // GET /posts/
-    @GetMapping("/")
-    public String fundRaiserPosts(Model model) {
+    // All posts
+    @GetMapping
+    public String list(Model model) {
         model.addAttribute("posts", service.findAll());
-        return "posts";
+        return "Posts/posts";
     }
 
-    // GET /posts/new
-    @GetMapping("/new")
-    public String newFundRaiserPostForm(Model model) {
-        FundRaiserPost fp = new FundRaiserPost();
-        fp.setPostType("text");
-        fp.setLikesCount(0);
-        fp.setCommentsCount(0);
-
-        model.addAttribute("post", fp);
-        return "post_form";
+    // Form
+    @GetMapping("/new/{jarId}")
+    public String newPost(@PathVariable Integer jarId, Model model) {
+        model.addAttribute("post", new FundRaiserPost());
+        model.addAttribute("jarId", jarId);
+        return "Posts/post_form";
     }
 
-    // POST /posts
-    @PostMapping
-    public String createFundRaiserPost(@ModelAttribute("post") FundRaiserPost fp) {
-        service.create(fp);
-        return "redirect:/posts/";
+    // Create
+    @PostMapping("/create/{jarId}")
+    public String create(@PathVariable Integer jarId,
+                         @ModelAttribute FundRaiserPost post) {
+
+        service.createPost(jarId, post);
+        return "redirect:/posts";
     }
 }

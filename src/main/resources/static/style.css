@@ -698,3 +698,190 @@ footer {
         font-size: 1.4rem;
     }
 }
+/* ============================================================
+   POSTS PAGE – CUSTOM STYLES (SAFE, DOES NOT TOUCH GLOBAL CSS)
+   ============================================================ */
+
+.posts-page-wrapper {
+    max-width: 900px;
+    margin: 2.5rem auto;
+    padding: 0 1.25rem;
+}
+
+.posts-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #003d99;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Each Post Card */
+.post {
+    background: #ffffff;
+    padding: 1.5rem 1.7rem;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    border: 1px solid #e3e8f0;
+    margin-bottom: 1.8rem;
+    transition: 0.25s ease;
+    position: relative;
+}
+
+.post:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+/* Post Title */
+.post .title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1f3b57;
+    margin-bottom: 0.7rem;
+}
+
+/* Meta Data */
+.post .meta {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+/* Post Content */
+.post p {
+    color: #444;
+    font-size: 1rem;
+    line-height: 1.55;
+    white-space: pre-line;
+    margin-bottom: 1rem;
+}
+
+/* Responsive post images */
+.post img {
+    display: block;
+    max-width: 100%;
+    height: auto;             /* keeps aspect ratio */
+    object-fit: cover;        /* avoids distortion */
+    border-radius: 12px;
+    margin-top: 0.7rem;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.12);
+}
+
+/* Vertical images look too tall – limit height */
+.post img {
+    max-height: 420px;        /* prevents huge vertical images */
+}
+
+/* Allow very tall vertical images to scroll inside */
+@media (max-width: 640px) {
+    .post img {
+        max-height: 350px;
+    }
+}
+
+/* "No posts" message */
+.no-posts {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #555;
+    margin-top: 3rem;
+}
+
+/* Footer spacing fix */
+.posts-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+}
+
+/* Responsiveness */
+@media (max-width: 640px) {
+    .post {
+        padding: 1.2rem;
+        border-radius: 12px;
+    }
+
+    .post .title {
+        font-size: 1.15rem;
+    }
+
+    .posts-title {
+        font-size: 1.6rem;
+    }
+}
+/* ============================================================
+   STICKY FOOTER SYSTEM (WORKS ON EVERY PAGE)
+   ============================================================ */
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.page-wrapper {
+    flex: 1; /* pushes the footer down */
+}
+
+/* Optional: ensure footer looks correct */
+.posts-footer {
+    text-align: center;
+    padding: 1rem;
+    background: #f0f0f0;
+    color: #666;
+    margin-top: auto;
+}
+/* ============================================================
+   POSTS - Likes & Comments Section
+   ============================================================ */
+
+.post-stats {
+    display: flex;
+    gap: 1.2rem;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f5ff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #d7e3ff;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.stat:hover {
+    background: #e4edff;
+}
+
+.stat.likes {
+    color: #d64545;
+}
+
+.stat.comments {
+    color: #0052cc;
+}
+.donate-btn {
+    background-color: #ff7f32;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-left: 15px;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+.donate-btn:hover {
+    background-color: #ff6a00;
+}
+
