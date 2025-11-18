@@ -42,22 +42,22 @@ class FundRaiserPostControllerTest {
     void newPost_addsEmptyPostAndJarId_andReturnsFormView() {
         Model model = new ExtendedModelMap();
 
-        String view = controller.newPost(5, model);
+        String view = controller.newPost(Integer.valueOf(5), model);
 
         assertEquals("Posts/post_form", view);
         assertTrue(model.containsAttribute("post"));
         assertTrue(model.getAttribute("post") instanceof FundRaiserPost);
         assertTrue(model.containsAttribute("jarId"));
-        assertEquals(5, model.getAttribute("jarId"));
+        assertEquals((short) 5, (Short) model.getAttribute("jarId"));
     }
 
     @Test
     void create_callsServiceAndRedirects() {
         FundRaiserPost post = new FundRaiserPost();
 
-        String view = controller.create(10, post);
+        String view = controller.create(Integer.valueOf(10), post);
 
         assertEquals("redirect:/posts", view);
-        verify(service).createPost(10, post);
+        verify(service).createPost(Integer.valueOf(10), post);
     }
 }

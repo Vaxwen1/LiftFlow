@@ -4,6 +4,7 @@ import com.liftflow.model.User;
 import com.liftflow.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -81,11 +82,11 @@ class UserControllerTest {
     @Test
     void showEditForm_loadsUserAndSetsModeEdit() {
         User user = new User();
-        user.setUserId(1);
-        when(userService.findById(1)).thenReturn(user);
+        user.setUserId(Integer.valueOf(1));
+        when(userService.findById(Integer.valueOf(1))).thenReturn(user);
 
         Model model = new ExtendedModelMap();
-        String view = controller.showEditForm(1, model);
+        String view = controller.showEditForm(Integer.valueOf(1), model);
 
         assertEquals("user_form", view);
         assertEquals(user, model.getAttribute("user"));
@@ -99,11 +100,11 @@ class UserControllerTest {
         BindingResult result = new BeanPropertyBindingResult(user, "user");
         result.reject("err");
 
-        String view = controller.updateUser(1, user, result, model);
+        String view = controller.updateUser(Integer.valueOf(1), user, result, model);
 
         assertEquals("user_form", view);
         assertEquals("edit", model.getAttribute("mode"));
-        verify(userService, never()).update(anyInt(), any());
+        verify(userService, never()).update(Integer.valueOf(ArgumentMatchers.anyInt()), any());
     }
 
     @Test
@@ -112,17 +113,17 @@ class UserControllerTest {
         Model model = new ExtendedModelMap();
         BindingResult result = new BeanPropertyBindingResult(user, "user");
 
-        String view = controller.updateUser(1, user, result, model);
+        String view = controller.updateUser(Integer.valueOf(1), user, result, model);
 
         assertEquals("redirect:/users", view);
-        verify(userService).update(1, user);
+        verify(userService).update(Integer.valueOf(1), user);
     }
 
     @Test
     void deleteUser_callsServiceAndRedirects() {
-        String view = controller.deleteUser(3);
+        String view = controller.deleteUser(Integer.valueOf(3));
 
         assertEquals("redirect:/users", view);
-        verify(userService).delete(3);
+        verify(userService).delete(Integer.valueOf(3));
     }
 }

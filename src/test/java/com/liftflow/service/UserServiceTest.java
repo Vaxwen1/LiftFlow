@@ -4,6 +4,7 @@ import com.liftflow.model.User;
 import com.liftflow.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
@@ -43,21 +44,21 @@ class UserServiceTest {
     @Test
     void findById_existing_returnsUser() {
         User user = new User();
-        user.setUserId(1);
-        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        user.setUserId(Integer.valueOf(1));
+        when(userRepository.findById(Integer.valueOf(1))).thenReturn(Optional.of(user));
 
-        User found = userService.findById(1);
+        User found = userService.findById(Integer.valueOf(1));
 
         assertEquals(1, found.getUserId());
-        verify(userRepository).findById(1);
+        verify(userRepository).findById(Integer.valueOf(1));
     }
 
     @Test
     void findById_missing_throwsNotFound() {
-        when(userRepository.findById(1)).thenReturn(Optional.empty());
+        when(userRepository.findById(Integer.valueOf(1))).thenReturn(Optional.empty());
 
         ResponseStatusException ex =
-                assertThrows(ResponseStatusException.class, () -> userService.findById(1));
+                assertThrows(ResponseStatusException.class, () -> userService.findById(Integer.valueOf(1)));
 
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
         assertTrue(ex.getReason().contains("User not found with ID 1"));
@@ -70,7 +71,7 @@ class UserServiceTest {
         when(passwordEncoder.encode("raw")).thenReturn("encoded");
         when(userRepository.save(any(User.class))).thenAnswer(inv -> {
             User u = inv.getArgument(0);
-            u.setUserId(10);
+            u.setUserId(Integer.valueOf(10));
             return u;
         });
 
@@ -88,7 +89,7 @@ class UserServiceTest {
     @Test
     void update_updatesOnlyNonNullFieldsAndEncodesPasswordWhenProvided() {
         User existing = new User();
-        existing.setUserId(1);
+        existing.setUserId(Integer.valueOf(1));
         existing.setUsername("old");
         existing.setEmail("old@mail.com");
         existing.setPassword("oldpass");
@@ -99,7 +100,7 @@ class UserServiceTest {
         existing.setStatus('A');
         existing.setUpdatedAt(LocalDateTime.now().minusDays(1));
 
-        when(userRepository.findById(1)).thenReturn(Optional.of(existing));
+        when(userRepository.findById(Integer.valueOf(1))).thenReturn(Optional.of(existing));
         when(passwordEncoder.encode("newpass")).thenReturn("encodedNew");
         when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
 
@@ -110,7 +111,7 @@ class UserServiceTest {
         // leave email null -> should not change
         // leave role/status as '\0' -> should not change
 
-        User result = userService.update(1, patch);
+        User result = userService.update(Integer.valueOf(1), patch);
 
         assertEquals("new", result.getUsername());
         assertEquals("old@mail.com", result.getEmail());
@@ -126,21 +127,21 @@ class UserServiceTest {
 
     @Test
     void delete_existing_deletes() {
-        when(userRepository.existsById(5)).thenReturn(true);
+        when(userRepository.existsById(Integer.valueOf(5))).thenReturn(Boolean.valueOf(true));
 
-        userService.delete(5);
+        userService.delete(Integer.valueOf(5));
 
-        verify(userRepository).deleteById(5);
+        verify(userRepository).deleteById(Integer.valueOf(5));
     }
 
     @Test
     void delete_missing_throwsNotFound() {
-        when(userRepository.existsById(5)).thenReturn(false);
+        when(userRepository.existsById(Integer.valueOf(5))).thenReturn(Boolean.valueOf(false));
 
         ResponseStatusException ex =
-                assertThrows(ResponseStatusException.class, () -> userService.delete(5));
+                assertThrows(ResponseStatusException.class, () -> userService.delete(Integer.valueOf(5)));
 
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
-        verify(userRepository, never()).deleteById(anyInt());
+        verify(userRepository, never()).deleteById(Integer.valueOf(ArgumentMatchers.anyInt()));
     }
 }

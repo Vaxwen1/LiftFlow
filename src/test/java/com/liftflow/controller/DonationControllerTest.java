@@ -39,11 +39,11 @@ class DonationControllerTest {
     @Test
     void showDonationForm_populatesModelAndReturnsView() {
         DonationJar jar = new DonationJar();
-        jar.setJarId(3);
-        when(jarRepo.findById(3)).thenReturn(Optional.of(jar));
+        jar.setJarId(Integer.valueOf(3));
+        when(jarRepo.findById(Integer.valueOf(3))).thenReturn(Optional.of(jar));
 
         Model model = new ExtendedModelMap();
-        String view = controller.showDonationForm(3, model);
+        String view = controller.showDonationForm(Integer.valueOf(3), model);
 
         assertEquals("Donation/form", view);
         assertTrue(model.containsAttribute("jar"));
@@ -58,7 +58,7 @@ class DonationControllerTest {
         when(donationService.addDonation(any(DonationRequest.class)))
                 .thenReturn(new Donation());
 
-        String view = controller.createDonation(3, request, attrs);
+        String view = controller.createDonation(Integer.valueOf(3), request, attrs);
 
         assertEquals("redirect:/jars", view);
         assertTrue(attrs.getFlashAttributes().containsKey("success"));
@@ -75,9 +75,9 @@ class DonationControllerTest {
     void refund_success_setsSuccessMessage() throws Exception {
         Model model = new ExtendedModelMap();
         Transaction tx = new Transaction();
-        tx.setTransactionId(1);
+        tx.setTransactionId(Integer.valueOf(1));
         tx.setTransactionAmount(new BigDecimal("50"));
-        when(donationService.refundDonation(1, new BigDecimal("10")))
+        when(donationService.refundDonation(Integer.valueOf(1), new BigDecimal("10")))
                 .thenReturn(tx);
 
         String view = controller.refund("1", "10", model);
@@ -89,7 +89,7 @@ class DonationControllerTest {
     @Test
     void refund_dataAccessException_setsErrorMessage() throws Exception {
         Model model = new ExtendedModelMap();
-        when(donationService.refundDonation(1, new BigDecimal("10")))
+        when(donationService.refundDonation(Integer.valueOf(1), new BigDecimal("10")))
                 .thenThrow(new DataIntegrityViolationException("DB error"));
 
         String view = controller.refund("1", "10", model);

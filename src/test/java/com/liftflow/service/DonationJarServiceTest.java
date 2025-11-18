@@ -41,14 +41,14 @@ class DonationJarServiceTest {
     @Test
     void getById_delegatesToRepository() {
         DonationJar jar = new DonationJar();
-        jar.setJarId(1);
-        when(repository.findById(1)).thenReturn(Optional.of(jar));
+        jar.setJarId(Integer.valueOf(1));
+        when(repository.findById(Integer.valueOf(1))).thenReturn(Optional.of(jar));
 
-        Optional<DonationJar> result = service.getById(1);
+        Optional<DonationJar> result = service.getById(Integer.valueOf(1));
 
         assertTrue(result.isPresent());
         assertEquals(1, result.get().getJarId());
-        verify(repository).findById(1);
+        verify(repository).findById(Integer.valueOf(1));
     }
 
     @Test
@@ -73,14 +73,14 @@ class DonationJarServiceTest {
     @Test
     void update_existing_updatesFields() {
         DonationJar existing = new DonationJar();
-        existing.setJarId(1);
+        existing.setJarId(Integer.valueOf(1));
         existing.setJarName("Old");
         existing.setTargetAmount(new BigDecimal("50"));
         existing.setDescription("Old desc");
         existing.setStartDate(LocalDate.from(LocalDateTime.now().minusDays(5)));
         existing.setEndDate(LocalDate.from(LocalDateTime.now().plusDays(5)));
 
-        when(repository.findById(1)).thenReturn(Optional.of(existing));
+        when(repository.findById(Integer.valueOf(1))).thenReturn(Optional.of(existing));
         when(repository.save(any(DonationJar.class))).thenAnswer(inv -> inv.getArgument(0));
 
         DonationJar updated = new DonationJar();
@@ -90,7 +90,7 @@ class DonationJarServiceTest {
         updated.setStartDate(LocalDate.from(LocalDateTime.now()));
         updated.setEndDate(LocalDate.from(LocalDateTime.now().plusDays(10)));
 
-        DonationJar result = service.update(1, updated);
+        DonationJar result = service.update(Integer.valueOf(1), updated);
 
         assertEquals("New", result.getJarName());
         assertEquals(new BigDecimal("200"), result.getTargetAmount());
@@ -102,27 +102,27 @@ class DonationJarServiceTest {
 
     @Test
     void update_missing_throwsRuntime() {
-        when(repository.findById(1)).thenReturn(Optional.empty());
+        when(repository.findById(Integer.valueOf(1))).thenReturn(Optional.empty());
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> service.update(1, new DonationJar()));
+                () -> service.update(Integer.valueOf(1), new DonationJar()));
 
         assertTrue(ex.getMessage().contains("DonationJar not found with id 1"));
     }
 
     @Test
     void delete_ok_callsRepository() {
-        service.delete(10);
-        verify(repository).deleteById(10);
+        service.delete(Integer.valueOf(10));
+        verify(repository).deleteById(Integer.valueOf(10));
     }
 
     @Test
     void delete_violation_throwsIllegalState() {
         doThrow(new DataIntegrityViolationException("FK"))
-                .when(repository).deleteById(10);
+                .when(repository).deleteById(Integer.valueOf(10));
 
         IllegalStateException ex =
-                assertThrows(IllegalStateException.class, () -> service.delete(10));
+                assertThrows(IllegalStateException.class, () -> service.delete(Integer.valueOf(10)));
 
         assertTrue(ex.getMessage().contains("contains donations"));
     }

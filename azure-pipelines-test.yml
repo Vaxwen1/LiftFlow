@@ -3,8 +3,8 @@ trigger:
   - dev
 
 pool:
-  name: 'LiftFlowAgentPool'    
-  
+  name: 'LiftFlowAgentPool'
+
 steps:
   - checkout: self
 

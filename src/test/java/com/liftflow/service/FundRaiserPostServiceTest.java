@@ -39,26 +39,26 @@ class FundRaiserPostServiceTest {
 
     @Test
     void findByJarId_delegatesToRepository() {
-        when(repo.findByDonationJar_JarId(5)).thenReturn(List.of(new FundRaiserPost()));
+        when(repo.findByDonationJar_JarId(Integer.valueOf(5))).thenReturn(List.of(new FundRaiserPost()));
 
-        List<FundRaiserPost> result = service.findByJarId(5);
+        List<FundRaiserPost> result = service.findByJarId(Integer.valueOf(5));
 
         assertEquals(1, result.size());
-        verify(repo).findByDonationJar_JarId(5);
+        verify(repo).findByDonationJar_JarId(Integer.valueOf(5));
     }
 
     @Test
     void createPost_jarExists_setsJarAndTimestampsAndSaves() {
         DonationJar jar = new DonationJar();
-        jar.setJarId(7);
-        when(jarRepo.findById(7)).thenReturn(Optional.of(jar));
+        jar.setJarId(Integer.valueOf(7));
+        when(jarRepo.findById(Integer.valueOf(7))).thenReturn(Optional.of(jar));
         when(repo.save(any(FundRaiserPost.class)))
                 .thenAnswer(inv -> inv.getArgument(0));
 
         FundRaiserPost post = new FundRaiserPost();
         post.setTitle("Test");
 
-        FundRaiserPost saved = service.createPost(7, post);
+        FundRaiserPost saved = service.createPost(Integer.valueOf(7), post);
 
         assertEquals("Test", saved.getTitle());
         assertNotNull(saved.getDonationJar());
@@ -70,10 +70,10 @@ class FundRaiserPostServiceTest {
 
     @Test
     void createPost_jarMissing_throwsRuntime() {
-        when(jarRepo.findById(7)).thenReturn(Optional.empty());
+        when(jarRepo.findById(Integer.valueOf(7))).thenReturn(Optional.empty());
 
         RuntimeException ex = assertThrows(RuntimeException.class,
-                () -> service.createPost(7, new FundRaiserPost()));
+                () -> service.createPost(Integer.valueOf(7), new FundRaiserPost()));
 
         assertTrue(ex.getMessage().contains("Jar not found"));
     }

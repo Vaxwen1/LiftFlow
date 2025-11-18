@@ -44,7 +44,7 @@ class LoggedUserAdviceTest {
     @Test
     void addLoggedUser_whenAnonymousUser_doesNothing() {
         Authentication auth = mock(Authentication.class);
-        when(auth.isAuthenticated()).thenReturn(true);
+        when(auth.isAuthenticated()).thenReturn(Boolean.valueOf(true));
         when(auth.getPrincipal()).thenReturn("anonymousUser");
 
         SecurityContext context = mock(SecurityContext.class);
@@ -61,13 +61,13 @@ class LoggedUserAdviceTest {
     @Test
     void addLoggedUser_whenAuthenticated_addsLoggedUserToModel() {
         User user = new User();
-        user.setUserId(1);
+        user.setUserId(Integer.valueOf(1));
         user.setEmail("logged@mail.com");
 
         CustomUserDetails cud = new CustomUserDetails(user);
 
         Authentication auth = mock(Authentication.class);
-        when(auth.isAuthenticated()).thenReturn(true);
+        when(auth.isAuthenticated()).thenReturn(Boolean.valueOf(true));
         when(auth.getPrincipal()).thenReturn(cud);
 
         SecurityContext context = mock(SecurityContext.class);

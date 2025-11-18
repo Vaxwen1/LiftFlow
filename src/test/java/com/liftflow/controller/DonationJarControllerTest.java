@@ -49,7 +49,7 @@ class DonationJarControllerTest {
     @Test
     void listJars_populatesJarsAndMyJars() {
         User user = new User();
-        user.setUserId(1);
+        user.setUserId(Integer.valueOf(1));
         when(userRepository.findByEmail("user@mail.com")).thenReturn(Optional.of(user));
 
         DonationJar jar1 = new DonationJar();
@@ -81,7 +81,7 @@ class DonationJarControllerTest {
     @Test
     void createJar_ok_setsCreatedByAndRedirects() {
         User user = new User();
-        user.setUserId(1);
+        user.setUserId(Integer.valueOf(1));
         when(userRepository.findByEmail("user@mail.com")).thenReturn(Optional.of(user));
 
         DonationJar jar = new DonationJar();
@@ -98,21 +98,21 @@ class DonationJarControllerTest {
     void deleteJar_success_setsSuccessFlashAndRedirects() {
         RedirectAttributes attrs = new RedirectAttributesModelMap();
 
-        String view = controller.deleteJar(5, attrs);
+        String view = controller.deleteJar(Integer.valueOf(5), attrs);
 
         assertEquals("redirect:/jars", view);
         assertTrue(attrs.getFlashAttributes().containsKey("successMessage"));
-        verify(jarService).delete(5);
+        verify(jarService).delete(Integer.valueOf(5));
     }
 
     @Test
     void deleteJar_failure_setsErrorFlashAndRedirects() {
         doThrow(new IllegalStateException("Cannot delete"))
-                .when(jarService).delete(5);
+                .when(jarService).delete(Integer.valueOf(5));
 
         RedirectAttributes attrs = new RedirectAttributesModelMap();
 
-        String view = controller.deleteJar(5, attrs);
+        String view = controller.deleteJar(Integer.valueOf(5), attrs);
 
         assertEquals("redirect:/jars", view);
         assertTrue(attrs.getFlashAttributes().containsKey("errorMessage"));

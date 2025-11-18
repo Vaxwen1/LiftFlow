@@ -43,7 +43,7 @@ class FundraiserServiceTest {
     @Test
     void submitKyc_withImage_savesKycAndUpdatesRole() throws Exception {
         User user = new User();
-        user.setUserId(1);
+        user.setUserId(Integer.valueOf(1));
         user.setRole('U');
 
         when(userRepo.findByEmail("user@mail.com")).thenReturn(Optional.of(user));
@@ -79,7 +79,7 @@ class FundraiserServiceTest {
     @Test
     void submitKyc_emptyImage_doesNotFail() throws Exception {
         User user = new User();
-        user.setUserId(1);
+        user.setUserId(Integer.valueOf(1));
         when(userRepo.findByEmail("user@mail.com")).thenReturn(Optional.of(user));
 
         MockMultipartFile emptyFile = new MockMultipartFile(

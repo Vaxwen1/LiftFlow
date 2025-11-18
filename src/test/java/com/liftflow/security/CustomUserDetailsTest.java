@@ -10,7 +10,7 @@ class CustomUserDetailsTest {
     @Test
     void wrapsUserAndExposesFieldsCorrectly() {
         User user = new User();
-        user.setUserId(42);
+        user.setUserId(Integer.valueOf(42));
         user.setEmail("test@mail.com");
         user.setPassword("secret");
 
