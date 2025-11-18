@@ -1,12 +1,16 @@
 package com.liftflow.controller;
 
 import com.liftflow.model.Donation;
+import com.liftflow.model.User;
 import com.liftflow.model.dto.DonationRequest;
 import com.liftflow.repository.DonationJarRepository;
+import com.liftflow.repository.DonationRepository;
 import com.liftflow.repository.UserRepository;
 import com.liftflow.service.DonationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequestMapping("/donation")   // Jar is still the main resource
@@ -23,13 +28,15 @@ public class DonationController {
     private final DonationService donationService;
     private final UserRepository userRepo;
     private final DonationJarRepository jarRepo;
+    private final DonationRepository donationRepo;
 
     public DonationController(DonationService donationService,
                               UserRepository userRepo,
-                              DonationJarRepository jarRepo) {
+                              DonationJarRepository jarRepo, DonationRepository donationRepo) {
         this.donationService = donationService;
         this.userRepo = userRepo;
         this.jarRepo = jarRepo;
+        this.donationRepo = donationRepo;
     }
 
 
@@ -97,10 +104,29 @@ public class DonationController {
 
 
     @GetMapping("/refund")
-    public String refundForm(Model model) {
+    public String refundForm(Model model,
+                             @AuthenticationPrincipal UserDetails userDetails) {
+
+        // 1. Находим юзера по email (или username — см. ниже)
+        User user = userRepo.findByEmailWithDonations(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // 2. Берём все донаты этого юзера из DonationRepository
+        List<Donation> donations = donationRepo.findByUser(user);
+
+        System.out.println("donations size = " + donations.size());
+        for (Donation d : donations) {
+            System.out.println("ID=" + d.getDonationId()
+                    + " amount=" + d.getDonationAmount()
+                    + " date=" + d.getDonationDate());
+        }
+
+        // 3. Кладём в модель
+        model.addAttribute("donations", donations);
         model.addAttribute("transactionId", "");
         model.addAttribute("amount", "");
-        return "Donation/refund_form"; // <-- путь к твоему файлу
+
+        return "Donation/refund_form";
     }
 
 

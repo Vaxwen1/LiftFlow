@@ -3,6 +3,9 @@ package com.liftflow.controller;
 import com.liftflow.model.User;
 import com.liftflow.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,7 +27,16 @@ public class HomeController {
     // --------------------------
     @GetMapping("/")
     public String home() {
-        return "home"; // Public landing page
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null && auth.isAuthenticated()
+                && !(auth instanceof AnonymousAuthenticationToken)) {
+            // пользователь залогинен -> отправляем его куда надо
+            return "redirect:/posts"; // или /dashboard, как тебе нужно
+        }
+
+        // гость -> показываем обычный home с "Login / Get Started"
+        return "home"; // имя твоего шаблона
     }
 
     // --------------------------

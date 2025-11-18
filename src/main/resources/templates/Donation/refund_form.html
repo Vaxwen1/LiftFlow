@@ -23,23 +23,51 @@
 
         <!-- IF LOGGED IN -->
         <span th:if="${loggedUser != null}" class="user-box">
-            <span class="username" th:text="${loggedUser.username}"></span>
-            <a th:href="@{/logout}" class="nav-btn">Logout</a>
+            <a th:href="@{/dashboard}" class="username"
+               th:text="${loggedUser.username}"></a>
+
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit" class="nav-btn">Logout</button>
+            </form>
         </span>
 
     </div>
 </nav>
+
 <div class="refund-page-wrapper">
 
     <div class="refund-container">
 
         <h1 class="refund-title">Refund Donation</h1>
 
+        <!-- ====== Список донатов текущего пользователя ====== -->
+        <h2 style="margin-top: 10px;">Your Donations</h2>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+            <thead>
+            <tr style="border-bottom: 1px solid #ddd;">
+                <th style="padding: 8px;">ID</th>
+                <th style="padding: 8px;">Amount</th>
+                <th style="padding: 8px;">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="d : ${donations}" style="border-bottom: 1px solid #eee;">
+                <!-- ВАЖНО: используем ИМЕНА ПОЛЕЙ donationId / donationAmount / donationDate -->
+                <td style="padding: 8px;" th:text="${d.donationId}"></td>
+                <td style="padding: 8px;" th:text="${d.donationAmount}"></td>
+                <td style="padding: 8px;"
+                    th:text="${#temporals.format(d.donationDate, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            </tbody>
+        </table>
+
         <!-- Messages -->
         <div th:if="${error}" class="refund-error" th:text="${error}"></div>
         <div th:if="${success}" class="refund-success" th:text="${success}"></div>
 
-        <!-- Refund Form -->
+        <!-- ====== ТВОЯ СТАРАЯ ФОРМА (нетронутая) ====== -->
+
         <form class="refund-form" th:action="@{/donation/refund}" method="post">
 
             <!-- Transaction ID -->
@@ -51,7 +79,8 @@
             <!-- Refund Amount -->
             <div class="refund-field-group">
                 <label>Refund Amount</label>
-                <input type="number" step="0.01" name="amount" th:value="${amount}" placeholder="e.g. 100.00" required>
+                <input type="number" step="0.01" name="amount"
+                       th:value="${amount}" placeholder="e.g. 100.00" required>
                 <div class="refund-hint">Enter the amount you want to refund</div>
             </div>
 
@@ -61,7 +90,6 @@
         </form>
     </div>
 </div>
-
 
 </body>
 </html>

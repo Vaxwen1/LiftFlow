@@ -5,11 +5,13 @@ import com.liftflow.model.DonationJar;
 import com.liftflow.model.Transaction;
 import com.liftflow.model.dto.DonationRequest;
 import com.liftflow.repository.DonationJarRepository;
+import com.liftflow.repository.DonationRepository;
 import com.liftflow.repository.UserRepository;
 import com.liftflow.service.DonationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -27,13 +29,15 @@ class DonationControllerTest {
     private UserRepository userRepo;
     private DonationJarRepository jarRepo;
     private DonationController controller;
+    private DonationRepository donationRepo;
 
     @BeforeEach
     void setUp() {
         donationService = mock(DonationService.class);
         userRepo = mock(UserRepository.class);
         jarRepo = mock(DonationJarRepository.class);
-        controller = new DonationController(donationService, userRepo, jarRepo);
+        donationRepo = mock(DonationRepository.class);
+        controller = new DonationController(donationService, userRepo, jarRepo, donationRepo);
     }
 
     @Test
@@ -67,7 +71,15 @@ class DonationControllerTest {
     @Test
     void refundForm_returnsRefundView() {
         Model model = new ExtendedModelMap();
-        String view = controller.refundForm(model);
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername("testuser")
+                .password("pass")
+                .roles("USER")
+                .build();
+
+        String view = controller.refundForm(model, userDetails);
+
         assertEquals("Donation/refund_form", view);
     }
 
