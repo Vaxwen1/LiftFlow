@@ -1,7 +1,6 @@
 package com.liftflow.service;
 import com.liftflow.model.DonationJar;
 import com.liftflow.model.FundRaiserPost;
-import com.liftflow.model.User;
 import com.liftflow.repository.*;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;

@@ -1,0 +1,39 @@
+trigger:
+  - main
+  - dev
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - checkout: self
+
+  - task: JavaToolInstaller@0
+    displayName: "Install JDK 17"
+    inputs:
+      versionSpec: "17"
+      jdkArchitectureOption: "x64"
+      jdkSourceOption: "PreInstalled"
+      javaHomeOption: "path"       # << REQUIRED
+      cleanDestinationDirectory: true
+
+  - script: |
+      echo "JAVA VERSION:"
+      java -version
+    displayName: "Show Java version"
+
+  - task: Cache@2
+    inputs:
+      key: 'maven | "$(Agent.OS)" | **/pom.xml'
+      restoreKeys: |
+        maven | "$(Agent.OS)"
+      path: ~/.m2/repository
+    displayName: "Cache Maven dependencies"
+
+  - task: Maven@4
+    displayName: "Run unit tests"
+    inputs:
+      mavenPomFile: "pom.xml"
+      goals: "test"
+      publishJUnitResults: true
+      testResultsFiles: "**/surefire-reports/*.xml"
