@@ -3,7 +3,7 @@ trigger:
   - dev
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'LiftFlowAgentPool' 
 
 steps:
   - checkout: self
@@ -14,7 +14,7 @@ steps:
       versionSpec: "17"
       jdkArchitectureOption: "x64"
       jdkSourceOption: "PreInstalled"
-      javaHomeOption: "path"       
+      javaHomeOption: "path"
       cleanDestinationDirectory: true
 
   - script: |
