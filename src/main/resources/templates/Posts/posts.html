@@ -30,7 +30,11 @@
                 <a th:href="@{/dashboard}" class="username-link">
                     <span th:text="${loggedUser.username}"></span>
                 </a>
-                <a th:href="@{/logout}" class="nav-btn">Logout</a>
+                <form th:action="@{/logout}" method="post" style="display:inline">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <button type="submit" class="nav-btn">Logout</button>
+                </form>
+
             </span>
 
         </div>

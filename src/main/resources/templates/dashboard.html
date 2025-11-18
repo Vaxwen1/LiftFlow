@@ -10,7 +10,11 @@
     <div class="nav-left"><a th:href="@{/dashboard}" class="brand">LiftFlow</a></div>
     <div class="nav-right">
         <form th:action="@{/logout}" method="post" style="display:inline">
-            <button type="submit" class="nav-btn">Logout</button>
+            <a href="/posts" class="nav-btn" style="margin-right: 12px; margin-top: 3px;">Donate</a>
+            <a th:href="@{/donation/refund}" class="nav-btn" style="margin-right: 12px; margin-top: 3px;">
+                Request refund
+            </a>
+            <button type="submit" class="nav-btn" style="margin-top: 3px;">Logout</button>
         </form>
     </div>
 </nav>

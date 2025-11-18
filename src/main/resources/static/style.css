@@ -532,6 +532,23 @@ footer {
     padding-left: 32px !important;
 }
 
+.user-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.username {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #6c63ff, #9f8bff);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+
 /* Mobile tweaks for donation form */
 @media (max-width: 640px) {
     .donation-container {

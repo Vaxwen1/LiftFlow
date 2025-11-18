@@ -2,10 +2,15 @@ package com.liftflow.repository;
 
 import com.liftflow.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer>
 {
     Optional<User> findByEmail(String email);
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.donations WHERE u.email = :email")
+    Optional<User> findByEmailWithDonations(@Param("email") String email);
+
 }

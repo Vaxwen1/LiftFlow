@@ -23,7 +23,7 @@
 
         <!-- IF LOGGED IN -->
         <span th:if="${loggedUser != null}" class="user-box">
-            <span class="username" th:text="${loggedUser.username}"></span>
+            <a th:href="@{/dashboard}" class="username" th:text="${loggedUser.username}"></a>
             <a th:href="@{/logout}" class="nav-btn">Logout</a>
         </span>
 
