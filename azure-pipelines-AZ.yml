@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - dev-test2
+      - dev
 
 stages:
   - stage: __default
