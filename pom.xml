@@ -40,7 +40,6 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-
         <!-- JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -98,7 +97,6 @@
             <version>5.12.0</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -117,6 +115,7 @@
                 </configuration>
             </plugin>
 
+            <!-- Jacoco -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -137,9 +136,17 @@
                 </executions>
             </plugin>
 
+            <!--CRITICAL: Spring Boot Repackage plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
