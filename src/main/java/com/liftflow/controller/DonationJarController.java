@@ -14,10 +14,21 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
 
 @Controller
 @RequestMapping("/jars")
@@ -53,26 +64,51 @@ public class DonationJarController {
         return "jars/create";
     }
 
+//    @PostMapping
+//    public String createJar(@Valid @ModelAttribute("jar") DonationJar jar,
+//                            BindingResult result) {
+//
+//        if (result.hasErrors()) {
+//            return "jars/create";
+//        }
+//
+//        String email = SecurityContextHolder.getContext()
+//                .getAuthentication().getName();
+//
+//        User user = userRepository.findByEmail(email)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        jar.setCreatedBy(user);
+//
+//        jarService.create(jar);
+//
+//        return "redirect:/jars";
+//    }
+
     @PostMapping
     public String createJar(@Valid @ModelAttribute("jar") DonationJar jar,
-                            BindingResult result) {
+                            BindingResult result,
+                            @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
 
         if (result.hasErrors()) {
             return "jars/create";
         }
 
-        String email = SecurityContextHolder.getContext()
-                .getAuthentication().getName();
-
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         jar.setCreatedBy(user);
 
-        jarService.create(jar);
+        if (!imageFile.isEmpty()) {
+            jar.setImageData(imageFile.getBytes());
+        }
 
+        jarService.create(jar);
         return "redirect:/jars";
     }
+
+
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model) {
@@ -83,18 +119,63 @@ public class DonationJarController {
         return "jars/edit";
     }
 
+//    @PostMapping("/edit/{id}")
+//    public String updateJar(@PathVariable Integer id,
+//                            @Valid @ModelAttribute("jar") DonationJar jar,
+//                            BindingResult result) {
+//
+//        if (result.hasErrors()) {
+//            return "jars/edit";
+//        }
+//
+//        jarService.update(id, jar);
+//        return "redirect:/jars";
+//    }
+
     @PostMapping("/edit/{id}")
-    public String updateJar(@PathVariable Integer id,
-                            @Valid @ModelAttribute("jar") DonationJar jar,
-                            BindingResult result) {
+    public String updateJar(
+            @PathVariable Integer id,
+            @ModelAttribute("jar") DonationJar formJar,
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+            BindingResult result
+    ) throws IOException {
 
         if (result.hasErrors()) {
             return "jars/edit";
         }
 
-        jarService.update(id, jar);
+        DonationJar existing = jarService.getById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Jar not found"));
+
+        // update simple fields
+        existing.setJarName(formJar.getJarName());
+        existing.setDescription(formJar.getDescription());
+        existing.setTargetAmount(formJar.getTargetAmount());
+        existing.setStartDate(formJar.getStartDate());
+        existing.setEndDate(formJar.getEndDate());
+
+        // check if new file uploaded
+        if (imageFile != null && !imageFile.isEmpty()) {
+            existing.setImageData(imageFile.getBytes());
+            existing.setImageType(imageFile.getContentType());
+        }
+
+        jarService.update(id, existing);
+
         return "redirect:/jars";
     }
+
+
+
+    @GetMapping("/image/{id}")
+    @ResponseBody
+    public byte[] getImage(@PathVariable Integer id) {
+        DonationJar jar = jarService.getById(id)
+                .orElseThrow(() -> new RuntimeException("Jar not found"));
+        return jar.getImageData();
+    }
+
+
 
     @GetMapping("/delete/{id}")
     public String deleteJar(@PathVariable Integer id, RedirectAttributes redirectAttributes) {

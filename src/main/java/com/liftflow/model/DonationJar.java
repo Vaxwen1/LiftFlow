@@ -42,6 +42,15 @@ public class DonationJar {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Lob
+    @Column(name = "image_data")
+    private byte[] imageData;
+
+    public byte[] getImageData() { return imageData; }
+    public void setImageData(byte[] imageData) { this.imageData = imageData; }
+
+
+
     public DonationJar() {}
 
     // ----- геттеры/сеттеры -----
@@ -74,4 +83,7 @@ public class DonationJar {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public void setImageType(String contentType) {
+    }
 }
