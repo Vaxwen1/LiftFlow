@@ -23,12 +23,16 @@ jobs:
         with:
           java-version: '17'
           distribution: 'microsoft'
+          cache: 'maven'
+
+      - name: Clean Maven repository SNAPSHOTs
+        run: rm -rf ~/.m2/repository/com/liftflow
 
       - name: Build with Maven
-        run: mvn clean install -DskipTests
+        run: mvn clean package --no-transfer-progress
 
       - name: Rename jar for Azure
-        run: mv target/*.jar app.jar
+        run: mv target/*-SNAPSHOT.jar app.jar
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -62,3 +66,4 @@ jobs:
           app-name: 'LiftFlow'
           slot-name: 'Production'
           package: 'app.jar'
+
