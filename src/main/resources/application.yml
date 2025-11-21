@@ -5,17 +5,17 @@ spring:
   thymeleaf:
     cache: false
 
-  datasource:
-    url: "jdbc:sqlserver://liftflowserver.database.windows.net:1433;databaseName=LiftFlowDB;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-
 #  datasource:
 #    url: "jdbc:sqlserver://liftflowserver.database.windows.net:1433;databaseName=LiftFlowDB;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
-#    username: "app_user"
-#    password: "Very$trongP@ssw0rd!"
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
 #    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  datasource:
+    url: "jdbc:sqlserver://liftflowserver.database.windows.net:1433;databaseName=LiftFlowDB;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
+    username: "app_user"
+    password: "Very$trongP@ssw0rd!"
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
     hibernate:
