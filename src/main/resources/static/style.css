@@ -1,0 +1,904 @@
+/* ======= Global ======= */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: #f9fafc;
+    color: #333;
+}
+
+/* ======= Navbar (Improved) ======= */
+.navbar {
+    background: linear-gradient(120deg, #003d99, #0052cc);
+    color: #fff;
+    padding: 0.9rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.user-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.username {
+    font-weight: bold;
+    color: #333;
+}
+
+
+/* Brand (Logo / Name) */
+.navbar .brand {
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    font-size: 1.25rem;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Nav links container */
+.navbar .nav-right a {
+    color: #f8f8f8;
+    text-decoration: none;
+    margin-left: 1.3rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    position: relative;
+    padding-bottom: 3px;
+}
+
+/* Animated underline */
+.navbar .nav-right a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 2px;
+    background: #3bb3ff;
+    border-radius: 999px;
+    transition: width 0.25s ease;
+}
+
+.navbar .nav-right a:hover::after {
+    width: 100%;
+}
+
+/* Buttons style */
+.navbar .nav-btn {
+    padding: 6px 14px;
+    border-radius: 5px;
+    border: 1px solid #ffffff90;
+    transition: 0.2s ease;
+}
+
+.navbar .nav-btn:hover {
+    background: #fff;
+    color: #003d99 !important;
+}
+
+/* Register button (special) */
+.navbar .register {
+    background: #ffffff;
+    color: #003d99 !important;
+    border: 1px solid #fff;
+    font-weight: 600;
+}
+
+.navbar .register:hover {
+    background: #003d99;
+    color: #fff !important;
+    border-color: #003d99;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+    .navbar {
+        padding: 0.8rem 1.25rem;
+    }
+
+    .navbar .nav-right a {
+        margin-left: 0.8rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* ======= Hero Section ======= */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(120deg, #e6f0ff, #f9f9ff);
+}
+
+.hero-content {
+    max-width: 600px;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    color: #0052cc;
+}
+
+.hero h1 span {
+    color: #003d99;
+}
+
+.hero p {
+    margin-top: 1rem;
+    color: #555;
+    font-size: 1.1rem;
+}
+
+.hero-actions {
+    margin-top: 2rem;
+}
+
+.cta {
+    display: inline-block;
+    background: #0052cc;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    margin: 0 8px;
+    transition: background 0.2s;
+}
+
+.cta:hover {
+    background: #003d99;
+}
+
+.cta.secondary {
+    background: #fff;
+    color: #0052cc;
+    border: 1px solid #0052cc;
+}
+
+.cta.secondary:hover {
+    background: #e6f0ff;
+}
+
+/* ======= Footer ======= */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #f0f0f0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* ======= Auth pages ======= */
+.auth-section {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f6fb;
+    padding: 2rem 1rem;
+}
+
+.auth-card {
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-card h2 {
+    margin: 0 0 0.5rem;
+}
+
+.auth-subtitle {
+    margin-bottom: 1.5rem;
+    color: #666;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #d5d9e0;
+    border-radius: 5px;
+    font-size: 0.95rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #0052cc;
+    box-shadow: 0 0 0 2px rgba(0,82,204,0.1);
+}
+
+.auth-btn {
+    width: 100%;
+    background: #0052cc;
+    color: #fff;
+    border: none;
+    padding: 9px 0;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.auth-btn:hover {
+    background: #003d99;
+}
+
+.auth-footer {
+    margin-top: 1rem;
+    text-align: center;
+    color: #666;
+}
+
+.auth-footer a {
+    color: #0052cc;
+    text-decoration: none;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.error-box {
+    background: #ffecec;
+    color: #b20000;
+    border: 1px solid #f5c2c2;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.success-box {
+    background: #e6ffe6;
+    color: #046204;
+    border: 1px solid #c2f0c2;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+/* ======= User Table / Jars ======= */
+.content {
+    padding: 2rem;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.user-table th, .user-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.user-table th {
+    background: #0052cc;
+    color: #fff;
+}
+
+.table-btn {
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.table-btn.edit { background: #0052cc; }
+.table-btn.delete { background: #d9534f; }
+.table-btn.edit:hover { background: #003d99; }
+.table-btn.delete:hover { background: #c9302c; }
+
+
+/* ======= Donation Form ======= */
+
+:root {
+    --don-bg: #f3f5fb;
+    --don-nav-bg: #101827;
+    --don-primary: #1f3b57;
+    --don-primary-soft: #2f5578;
+    --don-accent: #3bb3ff;
+    --don-border: #dde2f0;
+    --don-radius-lg: 16px;
+    --don-radius-md: 10px;
+    --don-shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
+    --don-transition-fast: 0.18s ease-out;
+}
+
+/* Wrapper around the donation form page */
+.donation-page-wrapper {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2.5rem 1rem;
+    background: radial-gradient(circle at top, #e4ecff 0, #f5f6fa 50%, #edf1ff 100%);
+}
+
+/* Main card container for donation form */
+.donation-container {
+    width: 100%;
+    max-width: 520px;
+    background: #ffffff;
+    padding: 2.2rem 2rem 2rem;
+    border-radius: var(--don-radius-lg);
+    box-shadow: var(--don-shadow-soft);
+    position: relative;
+    overflow: hidden;
+}
+
+.donation-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(59, 179, 255, 0.12), transparent 55%);
+    pointer-events: none;
+}
+
+/* Title & subtitle */
+.donation-title {
+    text-align: center;
+    color: var(--don-primary);
+    margin: 0 0 1.6rem;
+    font-size: 1.6rem;
+    letter-spacing: 0.03em;
+}
+
+.donation-subtitle {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 1.6rem;
+}
+
+/* Form layout */
+.donation-form .donation-field-group {
+    margin-bottom: 1.2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.donation-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    font-size: 0.94rem;
+    color: #4b5563;
+}
+
+/* Jar name pill */
+.donation-jar-name {
+    font-weight: 600;
+    color: #111827;
+    padding: 0.5rem 0.8rem;
+    border-radius: 999px;
+    background: #f3f4ff;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+}
+
+.donation-jar-name .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--don-accent);
+}
+
+/* Inputs & selects (scoped to donation form) */
+.donation-form input[type="number"],
+.donation-form input[type="text"],
+.donation-form select {
+    width: 100%;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--don-border);
+    border-radius: var(--don-radius-md);
+    font-size: 0.95rem;
+    outline: none;
+    background-color: #f9fafb;
+    transition:
+        border-color var(--don-transition-fast),
+        box-shadow var(--don-transition-fast),
+        background-color var(--don-transition-fast),
+        transform var(--don-transition-fast);
+}
+
+.donation-form input::placeholder {
+    color: #9ca3af;
+}
+
+.donation-form input:focus,
+.donation-form select:focus {
+    border-color: var(--don-accent);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 179, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Custom select arrow */
+.donation-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image:
+        linear-gradient(45deg, transparent 50%, #6b7280 60%),
+        linear-gradient(135deg, #6b7280 40%, transparent 50%);
+    background-position:
+        calc(100% - 14px) 52%,
+        calc(100% - 10px) 52%;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+}
+
+/* Helper text & error */
+.donation-field-hint {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 0.25rem;
+}
+
+.donation-error {
+    font-size: 0.8rem;
+    color: #dc2626;
+    margin-top: 0.25rem;
+}
+
+/* Submit button for donation form */
+.donation-form button[type="submit"],
+.donation-btn-primary {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    margin-top: 0.5rem;
+    background: #005BEA;
+    color: #ffffff;
+    border: none;
+    border-radius: 999px;
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.35);
+    transition:
+        transform var(--don-transition-fast),
+        box-shadow var(--don-transition-fast),
+        opacity var(--don-transition-fast);
+}
+
+.donation-form button[type="submit"]:hover,
+.donation-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 32px rgba(15, 23, 42, 0.45);
+}
+
+.donation-form button[type="submit"]:active,
+.donation-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.35);
+}
+
+.donation-form button[type="submit"]:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Currency input wrapper */
+.donation-currency-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.donation-currency-symbol {
+    position: absolute;
+    left: 12px;
+    color: #6b7280;
+    font-size: 0.95rem;
+    pointer-events: none;
+}
+
+.donation-currency-wrapper input {
+    padding-left: 32px !important;
+}
+
+.user-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.username {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #6c63ff, #9f8bff);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+
+/* Mobile tweaks for donation form */
+@media (max-width: 640px) {
+    .donation-container {
+        padding: 1.6rem 1.25rem 1.5rem;
+        border-radius: 14px;
+    }
+
+    .donation-title {
+        font-size: 1.4rem;
+    }
+}
+
+/* ======= Refund Donation (Isolated Styles) ======= */
+
+:root {
+    --refund-primary: #1f3b57;
+    --refund-primary-soft: #2f5578;
+    --refund-accent: #3bb3ff;
+    --refund-border: #dde2f0;
+    --refund-radius-lg: 16px;
+    --refund-radius-md: 10px;
+    --refund-shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
+    --refund-transition-fast: 0.18s ease-out;
+}
+
+/* Page wrapper */
+.refund-page-wrapper {
+    min-height: calc(100vh - 80px); /* keeps single-color bg */
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: radial-gradient(circle at top, #eaf3ff 0, #f6f8fc 50%, #eef3ff 100%);
+}
+
+
+/* Main card */
+.refund-container {
+    width: 100%;
+    max-width: 520px;
+    background: #ffffff;
+    padding: 2.2rem 2rem;
+    border-radius: var(--refund-radius-lg);
+    box-shadow: var(--refund-shadow-soft);
+    position: relative;
+    overflow: hidden;
+}
+
+.refund-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(59, 179, 255, 0.12), transparent 55%);
+    pointer-events: none;      /* <-- add this */
+    /* or alternatively: z-index: -1; */
+}
+
+
+/* Titles */
+.refund-title {
+    text-align: center;
+    color: var(--refund-primary);
+    margin-bottom: 1.4rem;
+    font-size: 1.6rem;
+    letter-spacing: 0.03em;
+}
+
+.refund-subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 1.6rem;
+}
+
+/* Form structure */
+.refund-form .refund-field-group {
+    margin-bottom: 1.2rem;
+}
+
+.refund-form label {
+    display: block;
+    font-weight: 600;
+    color: #4b5563;
+    margin-bottom: 0.4rem;
+}
+
+/* Inputs */
+.refund-form input[type="text"],
+.refund-form input[type="number"],
+.refund-form textarea,
+.refund-form select {
+    width: 100%;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid var(--refund-border);
+    border-radius: var(--refund-radius-md);
+    font-size: 0.95rem;
+    background: #f9fafb;
+    transition: var(--refund-transition-fast);
+    outline: none;
+}
+
+.refund-form input:focus,
+.refund-form textarea:focus,
+.refund-form select:focus {
+    border-color: var(--refund-accent);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 179, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.refund-form textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+/* Notes / hints / errors */
+.refund-hint {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 0.25rem;
+}
+
+.refund-error {
+    font-size: 0.8rem;
+    color: #dc2626;
+    margin-top: 0.25rem;
+}
+
+/* Submit button */
+.refund-btn-primary {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    margin-top: 0.5rem;
+    background: #005BEA;
+    color: #ffffff;
+    font-size: 0.98rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.35);
+    transition: var(--refund-transition-fast);
+}
+
+.refund-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 32px rgba(15, 23, 42, 0.45);
+}
+
+.refund-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.35);
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .refund-container {
+        padding: 1.6rem 1.25rem;
+        border-radius: 14px;
+    }
+
+    .refund-title {
+        font-size: 1.4rem;
+    }
+}
+/* ============================================================
+   POSTS PAGE – CUSTOM STYLES (SAFE, DOES NOT TOUCH GLOBAL CSS)
+   ============================================================ */
+
+.posts-page-wrapper {
+    max-width: 900px;
+    margin: 2.5rem auto;
+    padding: 0 1.25rem;
+}
+
+.posts-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #003d99;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Each Post Card */
+.post {
+    background: #ffffff;
+    padding: 1.5rem 1.7rem;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    border: 1px solid #e3e8f0;
+    margin-bottom: 1.8rem;
+    transition: 0.25s ease;
+    position: relative;
+}
+
+.post:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+/* Post Title */
+.post .title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1f3b57;
+    margin-bottom: 0.7rem;
+}
+
+/* Meta Data */
+.post .meta {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+/* Post Content */
+.post p {
+    color: #444;
+    font-size: 1rem;
+    line-height: 1.55;
+    white-space: pre-line;
+    margin-bottom: 1rem;
+}
+
+/* Responsive post images */
+.post img {
+    display: block;
+    max-width: 100%;
+    height: auto;             /* keeps aspect ratio */
+    object-fit: cover;        /* avoids distortion */
+    border-radius: 12px;
+    margin-top: 0.7rem;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.12);
+}
+
+/* Vertical images look too tall – limit height */
+.post img {
+    max-height: 420px;        /* prevents huge vertical images */
+}
+
+/* Allow very tall vertical images to scroll inside */
+@media (max-width: 640px) {
+    .post img {
+        max-height: 350px;
+    }
+}
+
+/* "No posts" message */
+.no-posts {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #555;
+    margin-top: 3rem;
+}
+
+/* Footer spacing fix */
+.posts-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+}
+
+/* Responsiveness */
+@media (max-width: 640px) {
+    .post {
+        padding: 1.2rem;
+        border-radius: 12px;
+    }
+
+    .post .title {
+        font-size: 1.15rem;
+    }
+
+    .posts-title {
+        font-size: 1.6rem;
+    }
+}
+/* ============================================================
+   STICKY FOOTER SYSTEM (WORKS ON EVERY PAGE)
+   ============================================================ */
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.page-wrapper {
+    flex: 1; /* pushes the footer down */
+}
+
+/* Optional: ensure footer looks correct */
+.posts-footer {
+    text-align: center;
+    padding: 1rem;
+    background: #f0f0f0;
+    color: #666;
+    margin-top: auto;
+}
+/* ============================================================
+   POSTS - Likes & Comments Section
+   ============================================================ */
+
+.post-stats {
+    display: flex;
+    gap: 1.2rem;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f5ff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #d7e3ff;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.stat:hover {
+    background: #e4edff;
+}
+
+.stat.likes {
+    color: #d64545;
+}
+
+.stat.comments {
+    color: #0052cc;
+}
+.donate-btn {
+    background-color: #ff7f32;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-left: 15px;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+.donate-btn:hover {
+    background-color: #ff6a00;
+}
+

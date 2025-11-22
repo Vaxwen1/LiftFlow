@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: ${PORT:8081}
 
 spring:
   thymeleaf:
@@ -7,14 +7,18 @@ spring:
 
   datasource:
     url: "jdbc:sqlserver://liftflowserver.database.windows.net:1433;databaseName=LiftFlowDB;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
-    username: "app_user"
-    password: "Very$trongP@ssw0rd!"
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
     hibernate:
+      globally_quoted_identifiers: true
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: none
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.SQLServerDialect

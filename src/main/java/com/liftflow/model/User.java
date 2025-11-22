@@ -2,6 +2,8 @@ package com.liftflow.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Users", schema = "dbo")
@@ -15,7 +17,6 @@ public class User {
     @Column(nullable = false, length = 255)
     private String username;
 
-    // ⚠️ храните ХЭШ пароля, не raw
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
@@ -55,10 +56,10 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public User() {}
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Donation> donations = new ArrayList<>();
 
-    // геттеры/сеттеры (можно сгенерировать в IDE)
-    // ...
+    public User() {}
     public Integer getUserId() { return userId; }
     public void setUserId(Integer userId) { this.userId = userId; }
     public String getUsername() { return username; }
@@ -89,4 +90,15 @@ public class User {
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    public List<Donation> getDonations() {
+        return donations;
+    }
+
+    public void setDonations(List<Donation> donations) {
+        this.donations = donations;
+    }
+    public boolean isFundraiser() {
+        return this.role == 'F';
+    }
+
 }

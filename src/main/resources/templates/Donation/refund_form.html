@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Refund Donation</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <a href="/" class="brand">LiftFlow</a>
+    </div>
+
+    <div class="nav-right">
+
+        <!-- IF NOT LOGGED IN -->
+        <span th:if="${loggedUser == null}">
+            <a th:href="@{/login}" class="nav-btn">Login</a>
+            <a th:href="@{/register}" class="nav-btn register">Register</a>
+        </span>
+
+        <!-- IF LOGGED IN -->
+        <span th:if="${loggedUser != null}" class="user-box">
+            <a th:href="@{/dashboard}" class="username"
+               th:text="${loggedUser.username}"></a>
+
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit" class="nav-btn">Logout</button>
+            </form>
+        </span>
+
+    </div>
+</nav>
+
+<div class="refund-page-wrapper">
+
+    <div class="refund-container">
+
+        <h1 class="refund-title">Refund Donation</h1>
+
+        <!-- ====== Список донатов текущего пользователя ====== -->
+        <h2 style="margin-top: 10px;">Your Donations</h2>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+            <thead>
+            <tr style="border-bottom: 1px solid #ddd;">
+                <th style="padding: 8px;">ID</th>
+                <th style="padding: 8px;">Amount</th>
+                <th style="padding: 8px;">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="d : ${donations}" style="border-bottom: 1px solid #eee;">
+                <!-- ВАЖНО: используем ИМЕНА ПОЛЕЙ donationId / donationAmount / donationDate -->
+                <td style="padding: 8px;" th:text="${d.donationId}"></td>
+                <td style="padding: 8px;" th:text="${d.donationAmount}"></td>
+                <td style="padding: 8px;"
+                    th:text="${#temporals.format(d.donationDate, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Messages -->
+        <div th:if="${error}" class="refund-error" th:text="${error}"></div>
+        <div th:if="${success}" class="refund-success" th:text="${success}"></div>
+
+        <!-- ====== ТВОЯ СТАРАЯ ФОРМА (нетронутая) ====== -->
+
+        <form class="refund-form" th:action="@{/donation/refund}" method="post">
+
+            <!-- Transaction ID -->
+            <div class="refund-field-group">
+                <label>Transaction ID</label>
+                <input type="text" name="transactionId" th:value="${transactionId}" required>
+            </div>
+
+            <!-- Refund Amount -->
+            <div class="refund-field-group">
+                <label>Refund Amount</label>
+                <input type="number" step="0.01" name="amount"
+                       th:value="${amount}" placeholder="e.g. 100.00" required>
+                <div class="refund-hint">Enter the amount you want to refund</div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="refund-btn-primary">Refund</button>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

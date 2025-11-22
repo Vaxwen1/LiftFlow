@@ -1,0 +1,169 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LiftFlow - Create Jar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="stylesheets/style.css" rel="stylesheet" />
+    <link href="stylesheets/headers.css" rel="stylesheet" />
+    <link href="stylesheets/sticky-footer.css" rel="stylesheet" />
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<!-- HEADER -->
+<!--<header-->
+<!--        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-body-tertiary p-3"-->
+<!--&gt;-->
+<!--    <div class="col-md-3 mb-2 mb-md-0">-->
+<!--        <a-->
+<!--                href="images/logo.jpg"-->
+<!--                class="d-inline-flex link-body-emphasis text-decoration-none"-->
+<!--        >-->
+
+<!--            <img th:src="@{/images/logo.jpg}"-->
+<!--                 alt="Bootstrap"-->
+<!--                 width="40"-->
+<!--                 height="32"-->
+<!--            >-->
+
+<!--        </a>-->
+<!--    </div>-->
+<!--    <ul-->
+<!--            class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"-->
+<!--    >-->
+<!--        <li><a th:href="@{/}" class="nav-link px-2 link-secondary">LiftFlow</a></li>-->
+<!--        <li><a th:href="@{/templates/jars}" class="nav-link px-2">Donate</a></li>-->
+<!--        <li><a th:href="@{/posts/}" class="nav-link px-2">Posts</a></li>-->
+<!--        <li><a th:href="@{/}" class="nav-link px-2">FAQs</a></li>-->
+<!--        <li><a th:href="@{/}" class="nav-link px-2">Contact</a></li>-->
+<!--    </ul>-->
+<!--    <div class="col-md-3 text-end">-->
+<!--    </div>-->
+<!--</header>-->
+
+<nav class="navbar">
+    <div class="nav-left"><a th:href="@{/dashboard}" class="brand">LiftFlow</a></div>
+    <div class="nav-right">
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <a href="/jars" class="nav-btn" style="margin-right: 12px; margin-top: 3px;">Donate</a>
+            <a href="/posts" class="nav-btn" style="margin-right: 12px; margin-top: 3px;">Posts</a>
+            <a th:href="@{/donation/refund}" class="nav-btn" style="margin-right: 12px; margin-top: 3px;">
+                Request refund
+            </a>
+
+            <button type="submit" class="nav-btn" style="margin-top: 3px;">Logout</button>
+        </form>
+    </div>
+</nav>
+
+
+
+<!-- Success message -->
+<div th:if="${successMessage}" class="alert alert-success">
+    <span th:text="${successMessage}"></span>
+</div>
+
+<!-- Error message -->
+<div th:if="${errorMessage}" class="alert alert-danger">
+    <span th:text="${errorMessage}"></span>
+</div>
+
+<!-- MAIN FORM -->
+<main class="container my-5">
+    <div class="text-center mb-4">
+        <h1 class="display-4">Create Donation Jar</h1>
+        <p class="fs-5 text-body-secondary">Fill out the form below to create a new donation jar.</p>
+    </div>
+
+    <form th:action="@{/jars}" th:object="${jar}" method="post" enctype="multipart/form-data" class="shadow-sm p-4 rounded col-lg-6 mx-auto">
+        <div class="mb-3">
+            <label for="jarName" class="form-label">Jar Name</label>
+            <input type="text" th:field="*{jarName}" class="form-control" id="jarName" placeholder="Enter jar name" required />
+            <div class="text-danger" th:errors="*{jarName}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea th:field="*{description}" class="form-control" id="description" placeholder="Describe your jar"></textarea>
+            <div class="text-danger" th:errors="*{description}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="targetAmount" class="form-label">Target Amount ($)</label>
+            <input type="number" step="0.01" th:field="*{targetAmount}" class="form-control" id="targetAmount" placeholder="Enter target amount" required />
+            <div class="text-danger" th:errors="*{targetAmount}"></div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" th:field="*{startDate}" class="form-control" id="startDate" required />
+                <div class="text-danger" th:errors="*{startDate}"></div>
+            </div>
+            <div class="col-md-6">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" th:field="*{endDate}" class="form-control" id="endDate" />
+                <div class="text-danger" th:errors="*{endDate}"></div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="imageFile" class="form-label">Image</label>
+            <input type="file" id="imageFile" name="imageFile" accept="image/*" class="form-control"/>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary w-50">Create</button>
+        </div>
+
+    </form>
+
+    <div class="text-center mt-3">
+        <a th:href="@{/jars}" class="btn btn-link">Back to List</a>
+    </div>
+</main>
+
+<!-- ---------------------------- FOOTER ---------------------------------------- -->
+
+
+<div class="container">
+    <footer class="py-0 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item">
+                <a th:href="@{/}" class="nav-link px-2 text-body-secondary">LiftFlow</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/jars}" class="nav-link px-2 text-body-secondary">Donate</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/posts}" class="nav-link px-2 text-body-secondary">Posts</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/}" class="nav-link px-2 text-body-secondary">FAQs</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/}" class="nav-link px-2 text-body-secondary">Contact</a>
+            </li>
+        </ul>
+        <p class="text-center text-body-secondary">© 2025 Company, Inc</p>
+    </footer>
+</div>
+
+</div>
+</footer>
+
+<script
+        src="../assets/dist/js/bootstrap.bundle.min.js"
+        class="astro-vvvwv3sm"
+></script>
+
+
+<!-- -------------------------------------------------------------------- -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

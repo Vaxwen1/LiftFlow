@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Donation</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <a href="/" class="brand">LiftFlow</a>
+    </div>
+
+    <div class="nav-right">
+
+        <!-- IF NOT LOGGED IN -->
+        <span th:if="${loggedUser == null}">
+            <a th:href="@{/login}" class="nav-btn">Login</a>
+            <a th:href="@{/register}" class="nav-btn register">Register</a>
+        </span>
+
+        <!-- IF LOGGED IN -->
+        <span th:if="${loggedUser != null}" class="user-box">
+            <a th:href="@{/dashboard}" class="username" th:text="${loggedUser.username}"></a>
+            <a th:href="@{/logout}" class="nav-btn">Logout</a>
+        </span>
+
+    </div>
+</nav>
+
+<!-- Donation Form Wrapper -->
+<div class="donation-page-wrapper">
+
+    <div class="donation-container">
+
+        <div th:if="${success}" class="msg-ok" th:text="${success}"></div>
+        <div th:if="${error}" class="msg-err" th:text="${error}"></div>
+
+
+        <h1 class="donation-title">Add Donation</h1>
+        <p class="donation-subtitle">Fill in the details to continue</p>
+
+        <form class="donation-form" th:action="@{/donation/{jarId}/donations(jarId=${jar.jarId})}"
+              th:object="${donation}"
+              method="post">
+
+            <!-- Donation Jar -->
+            <div class="donation-field-group">
+                <label>Donation Jar</label>
+
+                <div class="donation-jar-name">
+                    <span class="dot"></span>
+                    <span th:text="${jar.jarName}">Help Project</span>
+                </div>
+
+                <!-- Hidden jarId binding -->
+                <input type="hidden" th:field="*{jarId}" th:value="${jar.jarId}">
+            </div>
+
+            <!-- Donation Amount -->
+            <div class="donation-field-group">
+                <label>Amount</label>
+
+                <div class="donation-currency-wrapper">
+                    <span class="donation-currency-symbol">$</span>
+                    <input type="number"
+                           step="0.01"
+                           th:field="*{amount}"
+                           placeholder="0.00"
+                           required>
+                </div>
+
+                <div class="donation-field-hint">Enter the amount you want to donate</div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="donation-field-group">
+                <label>Payment Method</label>
+
+                <select th:field="*{paymentMethod}" required>
+                    <option value="" disabled selected>Select payment method...</option>
+                    <option th:each="pm : ${paymentMethods}"
+                            th:value="${pm}"
+                            th:text="${pm}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="donation-btn-primary">
+                Save Donation
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+
+</html>

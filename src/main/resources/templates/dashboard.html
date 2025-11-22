@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LiftFlow - Dashboard</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-left"><a th:href="@{/dashboard}" class="brand">LiftFlow</a></div>
+    <div class="nav-right">
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <a href="/jars" class="nav-btn" style="margin-right: 12px; margin-top: 3px;">Donate</a>
+            <a href="/posts" class="nav-btn" style="margin-right: 12px; margin-top: 3px;">Posts</a>
+            <a th:href="@{/donation/refund}" class="nav-btn" style="margin-right: 12px; margin-top: 3px;">
+                Request refund
+            </a>
+
+            <button type="submit" class="nav-btn" style="margin-top: 3px;">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<section class="auth-section">
+    <div class="auth-card">
+        <h2 th:text="'Hello, ' + ${loggedUser.username} + '!'">Hello</h2>
+        <p>Welcome back. What would you like to do?</p>
+
+        <div style="margin-top: 2rem; text-align:center;">
+
+            <!-- Show centered UPGRADE button when NOT fundraiser -->
+            <div th:if="${!loggedUser.fundraiser}" style="text-align:center;">
+                <a th:if="${!loggedUser.fundraiser}"
+                   th:href="@{/fundraiser/upgrade}"
+                   class="cta">
+                    Upgrade to Fundraiser
+                </a>
+            </div>
+
+            <!-- Show MY DONATION JARS when fundaiser -->
+            <div th:if="${loggedUser.fundraiser}">
+                <a th:href="@{/jars}" class="cta secondary">
+                    My Donation Jars
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
